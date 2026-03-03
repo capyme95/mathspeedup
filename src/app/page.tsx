@@ -14,10 +14,10 @@ export default function Dashboard() {
     try {
       const [stdRes, logRes] = await Promise.all([
         fetch(`${url}/rest/v1/standards?select=*`, {
-          headers: { 'apikey': key, 'Authorization': \`Bearer \${key}\` }
+          headers: { 'apikey': key, 'Authorization': `Bearer ${key}` }
         }),
         fetch(`${url}/rest/v1/learning_logs?select=*&order=session_date.desc&limit=5`, {
-          headers: { 'apikey': key, 'Authorization': \`Bearer \${key}\` }
+          headers: { 'apikey': key, 'Authorization': `Bearer ${key}` }
         })
       ]);
       
@@ -54,7 +54,6 @@ export default function Dashboard() {
       </header>
 
       <main className="max-w-5xl mx-auto space-y-12">
-        {/* 新增：当前发布挑战题模块 */}
         <section className="bg-blue-600/5 border border-blue-500/20 p-8 rounded-2xl shadow-2xl relative overflow-hidden">
           <div className="absolute top-0 right-0 p-4 opacity-10 font-black text-6xl select-none uppercase">AS 91945</div>
           <div className="relative z-10">
