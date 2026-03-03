@@ -1,65 +1,64 @@
-import Image from "next/image";
+import React from 'react';
 
-export default function Home() {
+export const dynamic = 'force-dynamic';
+
+async function getSupabaseData() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  
+  const res = await fetch(`${url}/rest/v1/standards?select=*`, {
+    headers: {
+      'apikey': key!,
+      'Authorization': `Bearer ${key}`
+    },
+    next: { revalidate: 0 }
+  });
+  return res.json();
+}
+
+export default async function Dashboard() {
+  const standards = await getSupabaseData();
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="min-h-screen bg-slate-950 text-slate-50 p-8 font-sans">
+      <header className="max-w-5xl mx-auto mb-12">
+        <h1 className="text-4xl font-bold tracking-tight mb-2">MathSpeedup <span className="text-blue-500">Dashboard</span></h1>
+        <p className="text-slate-400">Sebastian's NCEA Level 1 Acceleration Tracker | Powered by WombatBot</p>
+      </header>
+
+      <main className="max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+          {standards.map((std: any) => (
+            <div key={std.id} className="bg-slate-900 border border-slate-800 p-6 rounded-xl shadow-xl hover:border-blue-500/50 transition-all">
+              <div className="flex justify-between items-start mb-4">
+                <span className="text-xs font-mono text-blue-400 bg-blue-500/10 px-2 py-1 rounded">{std.code}</span>
+                <span className="text-xs text-slate-500">Credits: {std.credits}</span>
+              </div>
+              <h3 className="text-xl font-semibold mb-4">{std.title}</h3>
+              <div className="flex items-center gap-2">
+                <div className="flex-1 h-2 bg-slate-800 rounded-full overflow-hidden">
+                  <div className="h-full bg-blue-500 w-1/3 shadow-[0_0_10px_rgba(59,130,246,0.5)]"></div>
+                </div>
+                <span className="text-sm font-medium text-slate-300">Phase 1</span>
+              </div>
+            </div>
+          ))}
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+
+        <section className="bg-slate-900 border border-slate-800 p-8 rounded-xl">
+          <h2 className="text-2xl font-bold mb-6">WombatBot <span className="text-emerald-500">Evaluation</span></h2>
+          <div className="space-y-4">
+            <div className="border-l-2 border-emerald-500 pl-4 py-2">
+              <p className="text-sm text-slate-500 mb-1">2026-03-02</p>
+              <p className="text-slate-200">Logic Mapping: Initial exposure. Ready for "Abstract Thinking" shift. Linear Reasoning: Understanding the "Growth Rate" vs "Base Value".</p>
+            </div>
+          </div>
+        </section>
       </main>
+
+      <footer className="max-w-5xl mx-auto mt-20 text-center text-slate-600 text-sm">
+        <p>© 2026 Digital Coral Ecosystem | High-Trust 2026 Verified</p>
+      </footer>
     </div>
   );
 }
