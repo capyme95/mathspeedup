@@ -3,8 +3,8 @@
 import React, { useEffect, useState } from 'react';
 
 export default function Dashboard() {
-  const [standards, setStandards] = useState([]);
-  const [logs, setLogs] = useState([]);
+  const [standards, setStandards] = useState<any[]>([]);
+  const [logs, setLogs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   const fetchData = async () => {
