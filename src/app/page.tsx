@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState, useCallback } from 'react';
 
-// 定义基础类型以确保 TS 严谨性
 interface Standard {
   id: string;
   code: string;
@@ -18,7 +17,6 @@ interface LearningLog {
 }
 
 export default function Dashboard() {
-  // 显式指定泛型类型，防止 never[] 错误
   const [standards, setStandards] = useState<Standard[]>([]);
   const [logs, setLogs] = useState<LearningLog[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -28,15 +26,12 @@ export default function Dashboard() {
     const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-    // 自查点 1: 环境变量空值校验
     if (!url || !key) {
-      console.error('Environment variables missing');
       setError('System configuration error: Missing API keys.');
       setLoading(false);
       return;
     }
 
-    // 自查点 2: 严格遵循 HeadersInit 类型
     const headers: HeadersInit = {
       'apikey': key,
       'Authorization': `Bearer ${key}`,
@@ -44,25 +39,20 @@ export default function Dashboard() {
     };
     
     try {
-      // 自查点 3: 增加超时控制和错误状态码检查
       const [stdRes, logRes] = await Promise.all([
         fetch(`${url}/rest/v1/standards?select=*`, { headers }),
         fetch(`${url}/rest/v1/learning_logs?select=*&order=session_date.desc&limit=5`, { headers })
       ]);
       
-      if (!stdRes.ok || !logRes.ok) {
-        throw new Error(`Upstream API error: ${stdRes.status} / ${logRes.status}`);
-      }
+      if (!stdRes.ok || !logRes.ok) throw new Error('Upstream API link failure');
 
       const stdData = await stdRes.json();
       const logData = await logRes.json();
       
-      // 自查点 4: 数组类型强制转换与 fallback
       setStandards(Array.isArray(stdData) ? (stdData as Standard[]) : []);
       setLogs(Array.isArray(logData) ? (logData as LearningLog[]) : []);
       setError(null);
     } catch (err: any) {
-      console.error('Fetch error:', err);
       setError(`Metabolic Link Failure: ${err.message}`);
     } finally {
       setLoading(false);
@@ -71,34 +61,17 @@ export default function Dashboard() {
 
   useEffect(() => {
     fetchData();
-    const interval = setInterval(fetchData, 15000); // 稍微放宽心跳间隔
+    const interval = setInterval(fetchData, 15000);
     return () => clearInterval(interval);
   }, [fetchData]);
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-slate-950 text-blue-500 flex items-center justify-center font-mono animate-pulse">
-        [ SYSTEM_INITIALIZING: METABOLIC_PUMP_ACTIVE ]
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-slate-950 text-red-500 flex flex-col items-center justify-center font-mono p-4 text-center">
-        <div className="border border-red-500/50 p-6 rounded-lg bg-red-500/5">
-          <h2 className="text-xl font-bold mb-4 uppercase">Critical Link Error</h2>
-          <p className="text-sm opacity-80">{error}</p>
-        </div>
-      </div>
-    );
-  }
+  if (loading) return <div className="min-h-screen bg-slate-950 text-blue-500 flex items-center justify-center font-mono animate-pulse">LOADING_DATA_METABOLISM...</div>;
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-50 p-4 md:p-8 font-sans selection:bg-blue-500/30">
       <header className="max-w-5xl mx-auto mb-12 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
         <div>
-          <h1 className="text-4xl font-bold tracking-tight mb-2">MathSpeedup <span className="text-blue-500">Dashboard</span></h1>
+          <h1 className="text-4xl font-bold tracking-tight mb-2 text-white">MathSpeedup <span className="text-blue-500">Dashboard</span></h1>
           <p className="text-slate-400">Sebastian&apos;s NCEA Level 1 Acceleration | High-Trust 2026</p>
         </div>
         <div className="text-right">
@@ -107,19 +80,19 @@ export default function Dashboard() {
       </header>
 
       <main className="max-w-5xl mx-auto space-y-12">
-        {/* Challenge Section */}
+        {/* Challenge Section (All English) */}
         <section className="bg-blue-600/5 border border-blue-500/20 p-6 md:p-8 rounded-2xl shadow-2xl relative overflow-hidden group hover:border-blue-500/40 transition-colors">
           <div className="absolute top-0 right-0 p-4 opacity-5 font-black text-6xl select-none uppercase pointer-events-none group-hover:opacity-10 transition-opacity">AS 91945</div>
           <div className="relative z-10">
             <h2 className="text-2xl font-bold mb-6 flex items-center gap-3 text-blue-400">
               <span className="bg-blue-500 w-2 h-6 rounded-full"></span>
-              Current Mission: 基线挑战 01
+              Current Mission: Baseline Challenge 01
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[
-                { title: 'Q1: Achieved', color: 'text-blue-400', content: '资源分配: $A$包学习$x$小时，$B$包比$A$包的3倍还多2小时。写出总时长的简化代数表达式。' },
-                { title: 'Q2: Merit', color: 'text-emerald-400', content: '负熵补偿: 效率方程 $E = 100 - 4d$。如果老板要求效率 $\\ge 60\\%$，Sebastian 最多能连学几天？请证明。' },
-                { title: 'Q3: Excellence', color: 'text-amber-400', content: '逻辑证明: 用代数证明“任意两个连续正奇数的平方差一定是 8 的倍数”。（提示：设较小奇数为 $2n-1$）' }
+                { title: 'Q1: Achieved', color: 'text-blue-400', content: 'Resource Allocation: Sebastian uses two packs. Pack A takes $x$ hours. Pack B takes 2 hours more than 3 times Pack A. Write a simplified expression for the total time.' },
+                { title: 'Q2: Merit', color: 'text-emerald-400', content: 'Efficiency Decay: Efficiency follows $E = 100 - 4d$, where $d$ is consecutive days. If the minimum required efficiency is $60\\%$, what is the maximum value for $d$? Prove your answer.' },
+                { title: 'Q3: Excellence', color: 'text-amber-400', content: 'Logical Proof: Using algebraic methods, prove that the difference between the squares of any two consecutive positive odd numbers is always a multiple of 8.' }
               ].map((q, idx) => (
                 <div key={idx} className="bg-slate-900/50 p-6 rounded-xl border border-slate-800 backdrop-blur-sm">
                   <span className={`text-xs font-mono ${q.color} mb-2 block uppercase tracking-wider font-semibold`}>{q.title}</span>
@@ -141,7 +114,7 @@ export default function Dashboard() {
                 <span className="text-xs font-mono text-blue-400 bg-blue-500/10 px-2 py-1 rounded">{std.code}</span>
                 <span className="text-xs text-slate-500">Credits: {std.credits}</span>
               </div>
-              <h3 className="text-xl font-semibold mb-4 group-hover:text-blue-400 transition-colors">{std.title}</h3>
+              <h3 className="text-xl font-semibold mb-4 group-hover:text-blue-400 transition-colors text-white">{std.title}</h3>
               <div className="flex items-center gap-3">
                 <div className="flex-1 h-2 bg-slate-800 rounded-full overflow-hidden">
                   <div className="h-full bg-gradient-to-r from-blue-600 to-blue-400 w-1/3 shadow-[0_0_15px_rgba(59,130,246,0.2)]"></div>
@@ -154,7 +127,7 @@ export default function Dashboard() {
 
         {/* Audit Logs */}
         <section className="bg-slate-900 border border-slate-800 p-6 md:p-8 rounded-xl shadow-2xl">
-          <h2 className="text-2xl font-bold mb-8 flex items-center gap-2">
+          <h2 className="text-2xl font-bold mb-8 flex items-center gap-2 text-white">
             <span className="w-2 h-6 bg-emerald-500 rounded-full"></span>
             Metabolic Log & Logic Audit
           </h2>
