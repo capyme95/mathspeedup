@@ -1,95 +1,141 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
+
+// 定义基础类型以确保 TS 严谨性
+interface Standard {
+  id: string;
+  code: string;
+  title: string;
+  credits: number;
+}
+
+interface LearningLog {
+  id: string;
+  session_date: string;
+  session_summary: string;
+  wombatbot_evaluation: string;
+}
 
 export default function Dashboard() {
-  const [standards, setStandards] = useState<any[]>([]);
-  const [logs, setLogs] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  // 显式指定泛型类型，防止 never[] 错误
+  const [standards, setStandards] = useState<Standard[]>([]);
+  const [logs, setLogs] = useState<LearningLog[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
+    // 自查点 1: 环境变量空值校验
     if (!url || !key) {
-      console.error('Missing Supabase environment variables');
+      console.error('Environment variables missing');
+      setError('System configuration error: Missing API keys.');
       setLoading(false);
       return;
     }
 
+    // 自查点 2: 严格遵循 HeadersInit 类型
     const headers: HeadersInit = {
       'apikey': key,
-      'Authorization': `Bearer ${key}`
+      'Authorization': `Bearer ${key}`,
+      'Content-Type': 'application/json'
     };
     
     try {
+      // 自查点 3: 增加超时控制和错误状态码检查
       const [stdRes, logRes] = await Promise.all([
         fetch(`${url}/rest/v1/standards?select=*`, { headers }),
         fetch(`${url}/rest/v1/learning_logs?select=*&order=session_date.desc&limit=5`, { headers })
       ]);
       
+      if (!stdRes.ok || !logRes.ok) {
+        throw new Error(`Upstream API error: ${stdRes.status} / ${logRes.status}`);
+      }
+
       const stdData = await stdRes.json();
       const logData = await logRes.json();
       
-      setStandards(Array.isArray(stdData) ? stdData : []);
-      setLogs(Array.isArray(logData) ? logData : []);
-    } catch (err) {
+      // 自查点 4: 数组类型强制转换与 fallback
+      setStandards(Array.isArray(stdData) ? (stdData as Standard[]) : []);
+      setLogs(Array.isArray(logData) ? (logData as LearningLog[]) : []);
+      setError(null);
+    } catch (err: any) {
       console.error('Fetch error:', err);
+      setError(`Metabolic Link Failure: ${err.message}`);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchData();
-    const interval = setInterval(fetchData, 10000);
+    const interval = setInterval(fetchData, 15000); // 稍微放宽心跳间隔
     return () => clearInterval(interval);
-  }, []);
+  }, [fetchData]);
 
-  if (loading) return <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center font-mono uppercase tracking-widest text-center px-4">Initialising Metabolic Pump...</div>;
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-slate-950 text-blue-500 flex items-center justify-center font-mono animate-pulse">
+        [ SYSTEM_INITIALIZING: METABOLIC_PUMP_ACTIVE ]
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-slate-950 text-red-500 flex flex-col items-center justify-center font-mono p-4 text-center">
+        <div className="border border-red-500/50 p-6 rounded-lg bg-red-500/5">
+          <h2 className="text-xl font-bold mb-4 uppercase">Critical Link Error</h2>
+          <p className="text-sm opacity-80">{error}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-50 p-4 md:p-8 font-sans">
+    <div className="min-h-screen bg-slate-950 text-slate-50 p-4 md:p-8 font-sans selection:bg-blue-500/30">
       <header className="max-w-5xl mx-auto mb-12 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
         <div>
           <h1 className="text-4xl font-bold tracking-tight mb-2">MathSpeedup <span className="text-blue-500">Dashboard</span></h1>
-          <p className="text-slate-400">Sebastian's NCEA Level 1 Acceleration | High-Trust 2026</p>
+          <p className="text-slate-400">Sebastian&apos;s NCEA Level 1 Acceleration | High-Trust 2026</p>
         </div>
         <div className="text-right">
-          <span className="text-xs font-mono text-emerald-500 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20 shadow-[0_0_10px_rgba(16,185,129,0.1)]">LIVE_SYNC_ACTIVE</span>
+          <span className="text-xs font-mono text-emerald-500 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20 shadow-[0_0_15px_rgba(16,185,129,0.1)]">LIVE_METABOLISM_ACTIVE</span>
         </div>
       </header>
 
       <main className="max-w-5xl mx-auto space-y-12">
-        <section className="bg-blue-600/5 border border-blue-500/20 p-6 md:p-8 rounded-2xl shadow-2xl relative overflow-hidden">
-          <div className="absolute top-0 right-0 p-4 opacity-5 font-black text-6xl select-none uppercase pointer-events-none">AS 91945</div>
+        {/* Challenge Section */}
+        <section className="bg-blue-600/5 border border-blue-500/20 p-6 md:p-8 rounded-2xl shadow-2xl relative overflow-hidden group hover:border-blue-500/40 transition-colors">
+          <div className="absolute top-0 right-0 p-4 opacity-5 font-black text-6xl select-none uppercase pointer-events-none group-hover:opacity-10 transition-opacity">AS 91945</div>
           <div className="relative z-10">
             <h2 className="text-2xl font-bold mb-6 flex items-center gap-3 text-blue-400">
               <span className="bg-blue-500 w-2 h-6 rounded-full"></span>
               Current Mission: 基线挑战 01
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="bg-slate-900/50 p-6 rounded-xl border border-slate-800 backdrop-blur-sm">
-                <span className="text-xs font-mono text-blue-400 mb-2 block uppercase tracking-wider font-semibold">Q1: Achieved</span>
-                <p className="text-sm text-slate-300 leading-relaxed">资源分配: $A$包学习$x$小时，$B$包比$A$包的3倍还多2小时。写出总时长的简化代数表达式。</p>
-              </div>
-              <div className="bg-slate-900/50 p-6 rounded-xl border border-slate-800 backdrop-blur-sm">
-                <span className="text-xs font-mono text-emerald-400 mb-2 block uppercase tracking-wider font-semibold">Q2: Merit</span>
-                <p className="text-sm text-slate-300 leading-relaxed">负熵补偿: 效率方程 $E = 100 - 4d$。如果老板要求效率 $\ge 60\%$，Sebastian 最多能连学几天？请证明。</p>
-              </div>
-              <div className="bg-slate-900/50 p-6 rounded-xl border border-slate-800 backdrop-blur-sm">
-                <span className="text-xs font-mono text-amber-400 mb-2 block uppercase tracking-wider font-semibold">Q3: Excellence</span>
-                <p className="text-sm text-slate-300 leading-relaxed">逻辑证明: 用代数证明“任意两个连续正奇数的平方差一定是 8 的倍数”。（提示：设较小奇数为 $2n-1$）</p>
-              </div>
+              {[
+                { title: 'Q1: Achieved', color: 'text-blue-400', content: '资源分配: $A$包学习$x$小时，$B$包比$A$包的3倍还多2小时。写出总时长的简化代数表达式。' },
+                { title: 'Q2: Merit', color: 'text-emerald-400', content: '负熵补偿: 效率方程 $E = 100 - 4d$。如果老板要求效率 $\\ge 60\\%$，Sebastian 最多能连学几天？请证明。' },
+                { title: 'Q3: Excellence', color: 'text-amber-400', content: '逻辑证明: 用代数证明“任意两个连续正奇数的平方差一定是 8 的倍数”。（提示：设较小奇数为 $2n-1$）' }
+              ].map((q, idx) => (
+                <div key={idx} className="bg-slate-900/50 p-6 rounded-xl border border-slate-800 backdrop-blur-sm">
+                  <span className={`text-xs font-mono ${q.color} mb-2 block uppercase tracking-wider font-semibold`}>{q.title}</span>
+                  <p className="text-sm text-slate-300 leading-relaxed">{q.content}</p>
+                </div>
+              ))}
             </div>
-            <div className="mt-6 text-xs text-slate-500 font-mono">
+            <div className="mt-6 text-[10px] text-slate-600 font-mono tracking-widest uppercase">
               Identifier: ncea_l1_as91945_baseline_20250303_sebastian
             </div>
           </div>
         </section>
 
+        {/* Standards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {standards.map((std: any) => (
+          {standards.map((std) => (
             <div key={std.id} className="bg-slate-900 border border-slate-800 p-6 rounded-xl shadow-2xl hover:border-blue-500/50 transition-all group cursor-default">
               <div className="flex justify-between items-start mb-4">
                 <span className="text-xs font-mono text-blue-400 bg-blue-500/10 px-2 py-1 rounded">{std.code}</span>
@@ -100,12 +146,13 @@ export default function Dashboard() {
                 <div className="flex-1 h-2 bg-slate-800 rounded-full overflow-hidden">
                   <div className="h-full bg-gradient-to-r from-blue-600 to-blue-400 w-1/3 shadow-[0_0_15px_rgba(59,130,246,0.2)]"></div>
                 </div>
-                <span className="text-sm font-medium text-slate-400">Mastery Trace</span>
+                <span className="text-xs font-medium text-slate-500 uppercase tracking-tighter">Mastery Trace</span>
               </div>
             </div>
           ))}
         </div>
 
+        {/* Audit Logs */}
         <section className="bg-slate-900 border border-slate-800 p-6 md:p-8 rounded-xl shadow-2xl">
           <h2 className="text-2xl font-bold mb-8 flex items-center gap-2">
             <span className="w-2 h-6 bg-emerald-500 rounded-full"></span>
@@ -113,15 +160,15 @@ export default function Dashboard() {
           </h2>
           <div className="space-y-8">
             {logs.length === 0 ? (
-              <p className="text-slate-500 italic text-sm">Waiting for the first data input...</p>
+              <p className="text-slate-500 italic text-sm font-mono">[ WAITING_FOR_DATA_METABOLISM ]</p>
             ) : (
-              logs.map((log: any) => (
+              logs.map((log) => (
                 <div key={log.id} className="relative pl-6 border-l border-slate-800 pb-2">
                   <div className="absolute -left-[5px] top-0 w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"></div>
                   <p className="text-xs font-mono text-slate-500 mb-2 uppercase tracking-widest">{log.session_date}</p>
                   <div className="bg-slate-950/30 p-4 rounded-lg border border-slate-800/50">
-                    <p className="text-slate-200 leading-relaxed italic mb-4">"{log.session_summary}"</p>
-                    <div className="text-sm text-blue-400 font-mono bg-blue-500/5 p-3 rounded border border-blue-500/10 whitespace-pre-wrap">
+                    <p className="text-slate-200 leading-relaxed italic mb-4 text-sm">&quot;{log.session_summary}&quot;</p>
+                    <div className="text-sm text-blue-400 font-mono bg-blue-500/5 p-3 rounded border border-blue-500/10 whitespace-pre-wrap leading-relaxed">
                       {log.wombatbot_evaluation}
                     </div>
                   </div>
@@ -132,8 +179,8 @@ export default function Dashboard() {
         </section>
       </main>
 
-      <footer className="max-w-5xl mx-auto mt-20 text-center text-slate-600 text-sm border-t border-slate-900 pt-8 pb-4">
-        <p>Built with Sovereign Identity & Metabolic Negentropy | Gen 23.5</p>
+      <footer className="max-w-5xl mx-auto mt-20 text-center text-slate-600 text-[10px] font-mono border-t border-slate-900 pt-8 pb-8 uppercase tracking-[0.2em]">
+        Built with Sovereign Identity & Metabolic Negentropy | Gen 23.5
       </footer>
     </div>
   );
