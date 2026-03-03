@@ -43,88 +43,109 @@ export default function Dashboard() {
         body: JSON.stringify({
           session_date: new Date().toISOString().split('T')[0],
           session_summary: `[SUBMITTED_ANSWER]: ${answer}`,
-          wombatbot_evaluation: 'Awaiting review.'
+          wombatbot_evaluation: 'Pending audit for NCEA 2026 alignment.'
         })
       });
-      if (res.ok) { setSubmitStatus('SUCCESS: DATA RECORDED'); setAnswer(''); fetchData(); }
+      if (res.ok) { setSubmitStatus('SUCCESS: TRANSMISSION COMPLETE'); setAnswer(''); fetchData(); }
       else { throw new Error('FAIL'); }
-    } catch (err) { setSubmitStatus('ERROR'); } finally { setIsSubmitting(false); setTimeout(() => setSubmitStatus(null), 5000); }
+    } catch (err) { setSubmitStatus('ERROR: CONNECTION LOST'); } finally { setIsSubmitting(false); setTimeout(() => setSubmitStatus(null), 5000); }
   };
 
   useEffect(() => { fetchData(); const interval = setInterval(fetchData, 15000); return () => clearInterval(interval); }, [fetchData]);
 
-  if (loading) return <div className="min-h-screen bg-black text-white flex items-center justify-center font-mono">LOADING_METABOLISM...</div>;
+  if (loading) return <div className="min-h-screen bg-black text-white flex items-center justify-center font-mono">ESTABLISHING_LINK...</div>;
 
   return (
     <div className="min-h-screen bg-black text-white p-4 md:p-8 font-sans">
-      <header className="max-w-5xl mx-auto mb-12 flex justify-between items-end border-b border-white/20 pb-4">
-        <h1 className="text-3xl font-bold tracking-tighter uppercase">MathSpeedup Dashboard</h1>
-        <span className="text-[10px] font-mono border border-white/50 px-2 py-1">LIVE_SYNC</span>
+      <header className="max-w-5xl mx-auto mb-12 flex justify-between items-end border-b border-white pb-6">
+        <div>
+          <h1 className="text-4xl font-black tracking-tighter uppercase">MathSpeedup 1.2</h1>
+          <p className="text-xs opacity-50 font-mono mt-1">Auckland Acceleration Lab | NCEA AS91945 V3</p>
+        </div>
+        <div className="flex flex-col items-end gap-1">
+          <span className="text-[9px] font-mono border border-white px-2 py-0.5">READY_FOR_METABOLISM</span>
+          <span className="text-[9px] font-mono opacity-40">GEN 23.5 SVRN</span>
+        </div>
       </header>
 
-      <main className="max-w-5xl mx-auto space-y-16">
-        <section className="border-2 border-white p-6 md:p-8">
-          <h2 className="text-xl font-bold mb-6 uppercase tracking-widest underline">Current Mission: Baseline 01</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-            <div>
-              <span className="text-xs font-bold block mb-2">[Q1: ACHIEVED]</span>
-              <p className="text-sm leading-relaxed">Sebastian uses two packs. Pack A takes $x$ hours. Pack B takes 2 hours more than 3 times Pack A. Write a simplified expression for the total time.</p>
+      <main className="max-w-5xl mx-auto space-y-20">
+        {/* Unified Project: The Auckland Lab Setup */}
+        <section className="border-4 border-white p-6 md:p-10 relative">
+          <div className="absolute -top-4 left-6 bg-black px-4 font-black uppercase tracking-widest text-lg">Mission: Lab Infrastructure</div>
+          
+          <div className="mb-12 space-y-10">
+            <div className="space-y-4">
+              <h3 className="font-bold border-b border-white/20 pb-2">[PART 1: Resource Deployment - Achieved]</h3>
+              <p className="text-base leading-relaxed">
+                Sebastian is setting up two server modules. Module A requires <i>t</i> hours to synchronise. Module B requires 2 hours more than 3 times the sync time of Module A. 
+                <br/><br/>
+                <b>Task:</b> Write a simplified algebraic expression for the total synchronisation time for both modules combined.
+              </p>
             </div>
-            <div>
-              <span className="text-xs font-bold block mb-2">[Q2: MERIT]</span>
-              <p className="text-sm leading-relaxed">Efficiency follows $E = 100 - 4d$. If min efficiency is $60\%$, what is max $d$? Prove your answer.</p>
+
+            <div className="space-y-4">
+              <h3 className="font-bold border-b border-white/20 pb-2">[PART 2: Efficiency Maintenance - Merit]</h3>
+              <p className="text-base leading-relaxed">
+                Using the total time from Part 1, the lab efficiency (<i>E</i>) decays based on the number of consecutive operational days (<i>d</i>) according to the linear model: 
+                <br/><br/>
+                <b>E = 100 - 4d</b>
+                <br/><br/>
+                If the lab must maintain an efficiency of at least 60% to prevent logic collapse, calculate the maximum number of consecutive days the lab can run. Justify your answer using an equation.
+              </p>
             </div>
-            <div>
-              <span className="text-xs font-bold block mb-2">[Q3: EXCELLENCE]</span>
-              <p className="text-sm leading-relaxed">Prove that the difference between the squares of any two consecutive positive odd numbers is always a multiple of 8.</p>
+
+            <div className="space-y-4">
+              <h3 className="font-bold border-b border-white/20 pb-2">[PART 3: Generalisation & Limitations - Excellence]</h3>
+              <p className="text-base leading-relaxed">
+                To prove the stability of the lab&apos;s cooling system, Sebastian notes that the temperature difference follows a specific pattern related to square numbers.
+                <br/><br/>
+                <b>Task:</b> Prove algebraically that the difference between the squares of any two consecutive positive odd numbers is always a multiple of 8.
+                <br/><br/>
+                <b>Reflection (Required for Excellence):</b> Stating the assumptions you made for your proof, discuss one limitation of using a discrete algebraic model like this to predict real-world cooling fluctuations.
+              </p>
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="border-t border-white/20 pt-8">
+          <form onSubmit={handleSubmit} className="border-t-2 border-white pt-10">
+            <label className="block font-black uppercase mb-4 text-sm tracking-widest">Transmit Solutions (NCEA Evidence)</label>
             <textarea 
-              className="w-full bg-black border border-white/50 p-4 text-white text-sm font-mono min-h-[120px] outline-none focus:border-white"
-              placeholder="ENTER LOGIC SOLUTIONS HERE..."
+              className="w-full bg-black border-2 border-white/30 p-6 text-white text-lg font-mono min-h-[250px] outline-none focus:border-white transition-colors"
+              placeholder="Start typing your proof and working here..."
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}
             />
-            <div className="flex justify-between items-center mt-4">
-              <span className="text-[10px] font-mono opacity-50 uppercase">ID: AS91945_B01</span>
-              <button type="submit" className="bg-white text-black px-8 py-2 font-black text-xs uppercase hover:bg-white/90">
-                {isSubmitting ? 'TRANSMITTING...' : 'TRANSMIT ANSWER'}
+            <div className="flex justify-between items-center mt-6">
+              <span className="text-[10px] font-mono opacity-50 uppercase tracking-widest">Ref: Auckland_Lab_Baseline_01</span>
+              <button type="submit" className="bg-white text-black px-12 py-3 font-black text-sm uppercase hover:invert transition-all active:scale-95 shadow-lg">
+                {isSubmitting ? 'UPLOADING...' : 'TRANSMIT EVIDENCE'}
               </button>
             </div>
-            {submitStatus && <div className="mt-4 bg-white text-black p-2 text-center text-xs font-bold">{submitStatus}</div>}
+            {submitStatus && <div className="mt-6 bg-white text-black p-3 text-center text-sm font-black uppercase tracking-widest">{submitStatus}</div>}
           </form>
         </section>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {standards.map(std => (
-            <div key={std.id} className="border border-white/30 p-4">
-              <div className="flex justify-between items-center mb-2">
-                <span className="text-[10px] font-bold">{std.code}</span>
-                <span className="text-[10px] opacity-50">CREDITS: {std.credits}</span>
-              </div>
-              <h3 className="text-lg font-medium">{std.title}</h3>
-            </div>
-          ))}
-        </div>
-
-        <section className="border-t border-white/20 pt-8">
-          <h2 className="text-xl font-black mb-8 uppercase tracking-tighter">Logic Audit Logs</h2>
-          <div className="space-y-6">
+        {/* Metabolic Audit Log */}
+        <section>
+          <h2 className="text-2xl font-black mb-8 uppercase tracking-tighter italic border-l-8 border-white pl-4">Metabolic Logic Trace</h2>
+          <div className="space-y-10">
             {logs.map(log => (
-              <div key={log.id} className="border-l-2 border-white pl-4">
-                <p className="text-[10px] opacity-50 mb-1">{log.session_date}</p>
-                <p className="text-sm italic mb-2">"{log.session_summary}"</p>
-                <div className="text-xs font-mono opacity-80 bg-white/5 p-2">{log.wombatbot_evaluation}</div>
+              <div key={log.id} className="border border-white/10 p-6 hover:border-white/40 transition-colors">
+                <div className="flex justify-between text-[10px] font-mono opacity-40 mb-4 uppercase tracking-widest">
+                  <span>Timestamp: {log.session_date}</span>
+                  <span>Verified: High-Trust 2026</span>
+                </div>
+                <p className="text-sm italic mb-6 leading-relaxed opacity-90">&quot;{log.session_summary}&quot;</p>
+                <div className="text-xs font-mono bg-white/5 p-4 border border-white/20 leading-loose">
+                  <span className="text-white font-bold">[WOMBATBOT_AUDIT]:</span> {log.wombatbot_evaluation}
+                </div>
               </div>
             ))}
           </div>
         </section>
       </main>
 
-      <footer className="max-w-5xl mx-auto mt-24 text-[9px] font-mono opacity-30 text-center uppercase tracking-[0.5em] pb-12">
-        Sovereign Governance | Gen 23.5 | 100% Monochrome
+      <footer className="max-w-5xl mx-auto mt-32 text-[10px] font-mono opacity-20 text-center uppercase tracking-[1em] pb-16">
+        Sovereign | Digital Coral | No Complexity Leakage
       </footer>
     </div>
   );
