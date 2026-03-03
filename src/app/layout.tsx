@@ -32,3 +32,4 @@ export default function RootLayout({
     </html>
   );
 }
+// Triggering automatic redeploy via physical push at Tue Mar  3 08:12:37 UTC 2026
