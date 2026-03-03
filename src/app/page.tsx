@@ -35,11 +35,11 @@ export default function Dashboard() {
 
   useEffect(() => {
     fetchData();
-    const interval = setInterval(fetchData, 10000); // 每 10 秒自动轮询一次
+    const interval = setInterval(fetchData, 10000);
     return () => clearInterval(interval);
   }, []);
 
-  if (loading) return <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center font-mono">INITIALIZING METABOLIC PUMP...</div>;
+  if (loading) return <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center font-mono uppercase tracking-widest">Initialising Metabolic Pump...</div>;
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-50 p-8 font-sans">
@@ -53,8 +53,36 @@ export default function Dashboard() {
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+      <main className="max-w-5xl mx-auto space-y-12">
+        {/* 新增：当前发布挑战题模块 */}
+        <section className="bg-blue-600/5 border border-blue-500/20 p-8 rounded-2xl shadow-2xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 p-4 opacity-10 font-black text-6xl select-none uppercase">AS 91945</div>
+          <div className="relative z-10">
+            <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
+              <span className="bg-blue-500 w-2 h-6 rounded-full"></span>
+              Current Mission: 基线挑战 01
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="bg-slate-900/50 p-6 rounded-xl border border-slate-800">
+                <span className="text-xs font-mono text-blue-400 mb-2 block uppercase">Q1: Achieved</span>
+                <p className="text-sm text-slate-300 leading-relaxed">资源分配: $A$包学习$x$小时，$B$包比$A$包的3倍还多2小时。写出总时长的简化代数表达式。</p>
+              </div>
+              <div className="bg-slate-900/50 p-6 rounded-xl border border-slate-800">
+                <span className="text-xs font-mono text-emerald-400 mb-2 block uppercase">Q2: Merit</span>
+                <p className="text-sm text-slate-300 leading-relaxed">负熵补偿: 效率方程 $E = 100 - 4d$。如果老板要求效率 $\ge 60\%$，Sebastian 最多能连学几天？请证明。</p>
+              </div>
+              <div className="bg-slate-900/50 p-6 rounded-xl border border-slate-800">
+                <span className="text-xs font-mono text-amber-400 mb-2 block uppercase">Q3: Excellence</span>
+                <p className="text-sm text-slate-300 leading-relaxed">逻辑证明: 用代数证明“任意两个连续正奇数的平方差一定是 8 的倍数”。（提示：设较小奇数为 $2n-1$）</p>
+              </div>
+            </div>
+            <div className="mt-6 text-xs text-slate-500 font-mono">
+              Identifier: ncea_l1_as91945_baseline_20250303_sebastian
+            </div>
+          </div>
+        </section>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {standards.map((std: any) => (
             <div key={std.id} className="bg-slate-900 border border-slate-800 p-6 rounded-xl shadow-2xl hover:border-blue-500/50 transition-all group">
               <div className="flex justify-between items-start mb-4">
@@ -66,7 +94,7 @@ export default function Dashboard() {
                 <div className="flex-1 h-2 bg-slate-800 rounded-full overflow-hidden">
                   <div className="h-full bg-gradient-to-r from-blue-600 to-blue-400 w-1/3 shadow-[0_0_15px_rgba(59,130,246,0.3)]"></div>
                 </div>
-                <span className="text-sm font-medium text-slate-400">Gen 23.5 Audit</span>
+                <span className="text-sm font-medium text-slate-400">Mastery Trace</span>
               </div>
             </div>
           ))}
@@ -75,7 +103,7 @@ export default function Dashboard() {
         <section className="bg-slate-900 border border-slate-800 p-8 rounded-xl shadow-2xl">
           <h2 className="text-2xl font-bold mb-8 flex items-center gap-2">
             <span className="w-2 h-6 bg-emerald-500 rounded-full"></span>
-            WombatBot Logic Evaluation
+            Metabolic Log & Logic Audit
           </h2>
           <div className="space-y-8">
             {logs.map((log: any) => (
@@ -95,7 +123,7 @@ export default function Dashboard() {
       </main>
 
       <footer className="max-w-5xl mx-auto mt-20 text-center text-slate-600 text-sm border-t border-slate-900 pt-8">
-        <p>Built with Sovereign Identity & Metabolic Negentropy</p>
+        <p>Built with Sovereign Identity & Metabolic Negentropy | Gen 23.5</p>
       </footer>
     </div>
   );
