@@ -23,11 +23,11 @@ export default function Dashboard() {
     const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
     if (!url || !key) return;
-    const headers: HeadersInit = { 'apikey': key, 'Authorization': \`Bearer \${key}\` };
+    const headers: HeadersInit = { 'apikey': key, 'Authorization': `Bearer ${key}` };
     try {
       const [stdRes, logRes] = await Promise.all([
-        fetch(\`\${url}/rest/v1/standards?select=*\`, { headers }),
-        fetch(\`\${url}/rest/v1/learning_logs?select=*&order=session_date.desc&limit=5\`, { headers })
+        fetch(`${url}/rest/v1/standards?select=*`, { headers }),
+        fetch(`${url}/rest/v1/learning_logs?select=*&order=session_date.desc&limit=5`, { headers })
       ]);
       const stdData = await stdRes.json();
       const logData = await logRes.json();
@@ -49,14 +49,14 @@ export default function Dashboard() {
     const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
     const fingerprint = atomizeLogic(answer);
     try {
-      const res = await fetch(\`\${url}/rest/v1/learning_logs\`, {
+      const res = await fetch(`${url}/rest/v1/learning_logs`, {
         method: 'POST',
-        headers: { 'apikey': key!, 'Authorization': \`Bearer \${key}\`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+        headers: { 'apikey': key!, 'Authorization': `Bearer ${key}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
         body: JSON.stringify({
           session_date: new Date().toISOString().split('T')[0],
-          session_summary: \`[LOGIC_SEALED]\`,
+          session_summary: `[LOGIC_SEALED]`,
           logic_fingerprint: fingerprint,
-          wombatbot_evaluation: 'Awaiting gold-standard audit.'
+          wombatbot_evaluation: 'Awaiting expert audit.'
         })
       });
       if (res.ok) { setSubmitStatus('SUCCESS: ASSET SEALED'); setAnswer(''); fetchData(); }
@@ -69,7 +69,7 @@ export default function Dashboard() {
   if (loading) return <div className="min-h-screen bg-[#0D0D0D] text-[#D4AF37] flex items-center justify-center font-mono uppercase tracking-widest">Initialising_Obsidian_Core...</div>;
 
   return (
-    <div className="min-h-screen bg-[#0D0D0D] text-zinc-300 p-4 md:p-12 font-sans selection:bg-[#D4AF37] selection:text-black">
+    <div className="min-h-screen bg-[#0D0D0D] text-zinc-300 p-4 md:p-12 font-sans selection:bg-[#D4AF37] selection:text-black text-white">
       <header className="max-w-5xl mx-auto mb-20 flex justify-between items-start border-b border-[#D4AF37]/30 pb-10">
         <div>
           <h1 className="text-5xl font-black tracking-tighter uppercase italic text-white">MathSpeedup <span className="text-[#D4AF37]">1.2</span></h1>
@@ -100,9 +100,9 @@ export default function Dashboard() {
                 <p className="text-zinc-300 text-lg italic"><b>R = 850 - 75w</b></p>
                 <p className="mt-4">Calculate maximum <i>w</i> to maintain R &gt; $400.</p>
               </div>
-              <div className="bg-[#0D0D0D]/50 p-8 border-l border-[#D4AF37]/30 text-white">
+              <div className="bg-[#0D0D0D]/50 p-8 border-l border-[#D4AF37]/30">
                 <h3 className="text-[#D4AF37] font-black uppercase mb-4 tracking-tighter">[ Phase 3: Excellence Proof ]</h3>
-                <p>Prove algebraically that the difference of squares of consecutive odd integers is a multiple of 8.</p>
+                <p className="text-zinc-300">Prove algebraically that the difference of squares of consecutive odd integers is a multiple of 8.</p>
               </div>
             </div>
           </div>
