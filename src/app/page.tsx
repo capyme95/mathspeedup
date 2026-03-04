@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 
 interface Standard { id: string; code: string; title: string; credits: number; }
 interface LearningLog { 
@@ -18,6 +18,16 @@ export default function Dashboard() {
   const [answer, setAnswer] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [submitStatus, setSubmitStatus] = useState<string | null>(null);
+
+  // --- Dynamic Environment Factors ---
+  const envFactors = useMemo(() => {
+    // These remain stable for the component lifecycle until refresh
+    return {
+      rainProb: Math.floor(Math.random() * 101), // 0-100%
+      discountRate: (Math.random() * (1.2 - 0.8) + 0.8).toFixed(2), // 0.80 - 1.20
+      fuelIndex: (Math.random() * (1.5 - 0.9) + 0.9).toFixed(2),
+    };
+  }, []);
 
   const fetchData = useCallback(async () => {
     const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -48,15 +58,19 @@ export default function Dashboard() {
     const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
     const fingerprint = atomizeLogic(answer);
+    
+    // Inject environmental metadata into summary for auditor context
+    const summaryWithEnv = `[LOGIC_FINGERPRINT_SUBMISSION] | Env: Rain=${envFactors.rainProb}%, Disc=${envFactors.discountRate}`;
+
     try {
       const res = await fetch(`${url}/rest/v1/learning_logs`, {
         method: 'POST',
         headers: { 'apikey': key!, 'Authorization': `Bearer ${key}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
         body: JSON.stringify({
           session_date: new Date().toISOString().split('T')[0],
-          session_summary: `[LOGIC_FINGERPRINT_SUBMISSION]`,
+          session_summary: summaryWithEnv,
           logic_fingerprint: fingerprint,
-          wombatbot_evaluation: 'Awaiting narrative and logic audit.'
+          wombatbot_evaluation: 'Awaiting dynamic narrative and logic audit.'
         })
       });
       if (res.ok) { setSubmitStatus('SUCCESS: LOGIC SEALED'); setAnswer(''); fetchData(); }
@@ -72,7 +86,7 @@ export default function Dashboard() {
     <div className="min-h-screen bg-[#0D0D0D] text-zinc-300 p-4 md:p-12 font-sans selection:bg-[#D4AF37] selection:text-black">
       <header className="max-w-5xl mx-auto mb-20 flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-[#D4AF37]/30 pb-12">
         <div>
-          <h1 className="text-6xl font-black tracking-tighter uppercase italic text-white leading-none">MathSpeedup <span className="text-[#D4AF37]">1.2</span></h1>
+          <h1 className="text-6xl font-black tracking-tighter uppercase italic text-white leading-none">MathSpeedup <span className="text-[#D4AF37]">1.3</span></h1>
           <p className="text-xs font-mono mt-4 tracking-[0.3em] opacity-40 uppercase">Avondale Sunday Market // NCEA AS91945 // Auckland 2026</p>
         </div>
         <div className="flex flex-col items-end gap-3">
@@ -85,6 +99,26 @@ export default function Dashboard() {
       </header>
 
       <main className="max-w-5xl mx-auto space-y-32">
+        {/* Dynamic Environment Sidebar/Widget */}
+        <section className="bg-zinc-900/50 border border-[#D4AF37]/20 p-6 font-mono text-xs uppercase tracking-widest flex flex-wrap gap-10 justify-around">
+           <div className="flex flex-col gap-1">
+              <span className="opacity-40">Rain_Probability</span>
+              <span className="text-white text-lg font-black">{envFactors.rainProb}%</span>
+           </div>
+           <div className="flex flex-col gap-1">
+              <span className="opacity-40">Market_Discount_Rate (d)</span>
+              <span className="text-[#D4AF37] text-lg font-black">{envFactors.discountRate}x</span>
+           </div>
+           <div className="flex flex-col gap-1">
+              <span className="opacity-40">Fuel_Price_Index</span>
+              <span className="text-white text-lg font-black">{envFactors.fuelIndex}</span>
+           </div>
+           <div className="flex flex-col gap-1">
+              <span className="opacity-40">Observation_Status</span>
+              <span className="text-emerald-500 text-lg font-black">ACTIVE</span>
+           </div>
+        </section>
+
         <section className="border border-[#D4AF37]/50 p-8 md:p-20 relative bg-[#111111] shadow-[30px_30px_60px_rgba(0,0,0,0.5)]">
           <div className="absolute -top-5 left-10 bg-[#0D0D0D] border-2 border-[#D4AF37] px-8 py-1.5 font-black uppercase text-sm tracking-[0.3em] text-[#D4AF37]">Internal Assessment Project</div>
           
@@ -108,11 +142,13 @@ export default function Dashboard() {
                 <div className="bg-black/40 p-10 border-l-2 border-[#D4AF37]">
                   <h3 className="text-2xl font-black text-[#D4AF37] uppercase mb-6 tracking-wide">[ Phase 2: Revenue Thresholds - Merit ]</h3>
                   <p className="text-lg text-zinc-300 leading-relaxed">
-                    Based on the footprint established in Phase 1, the market&apos;s total weekly revenue (<i>R</i>), measured in dollars, is expected to decrease as the number of consecutive rainy weekends (<i>w</i>) increases. The organisers provide the following linear model:
+                    Based on the footprint established in Phase 1, the market&apos;s total weekly revenue (<i>R</i>), measured in dollars, is expected to decrease as the number of consecutive rainy weekends (<i>w</i>) increases. The organisers provide the following dynamic linear model:
                     <br/><br/>
-                    <span className="text-4xl font-bold text-white block py-6 underline decoration-[#D4AF37]/40 tracking-widest text-center italic font-mono">R = 850 - 75w</span>
+                    <span className="text-4xl font-bold text-white block py-6 underline decoration-[#D4AF37]/40 tracking-widest text-center italic font-mono">R = 850 - (75 * w)</span>
                     <br/>
-                    If the organisers require a minimum revenue of <b>$400</b> to cover local council permits and cleaning costs, calculate the maximum number of rainy weekends the market can sustain. Justify your answer using an equation.
+                    <strong>Dynamic Constraint:</strong> Due to current conditions, a market discount factor <i>d</i> of <b>{envFactors.discountRate}</b> applies to the required minimum revenue. 
+                    <br/><br/>
+                    If the organisers require a minimum revenue of <b>${(400 * parseFloat(envFactors.discountRate)).toFixed(0)}</b> (calculated as $400 * <i>d</i>) to cover costs, calculate the maximum number of rainy weekends the market can sustain. Justify your answer using an equation.
                   </p>
                 </div>
 
@@ -123,7 +159,7 @@ export default function Dashboard() {
                     <br/><br/>
                     <strong>Task:</strong> Algebraically prove that the difference between the squares of any two consecutive positive odd integers is always a multiple of 8.
                     <br/><br/>
-                    <strong>Reflection:</strong> Explicitly state the assumptions you made for this algebraic model. Discuss one real-world limitation of using this discrete model to predict physical vendor growth in the dynamic Avondale Market environment.
+                    <strong>Reflection:</strong> Explicitly state the assumptions you made for this algebraic model. Given the current <b>{envFactors.rainProb}% Rain Probability</b>, discuss one real-world limitation of using this discrete model to predict physical vendor growth in the dynamic Avondale Market environment.
                   </p>
                 </div>
               </div>
@@ -139,7 +175,7 @@ export default function Dashboard() {
               onChange={(e) => setAnswer(e.target.value)}
             />
             <div className="flex flex-col md:flex-row justify-between items-center mt-12 gap-10">
-              <span className="text-[10px] font-mono opacity-30 uppercase tracking-[0.3em]">ID: AVONDALE_NARRATIVE_V2</span>
+              <span className="text-[10px] font-mono opacity-30 uppercase tracking-[0.3em]">ID: AVONDALE_DYNAMIC_V3</span>
               <button type="submit" className="w-full md:w-auto bg-[#D4AF37] text-black px-24 py-6 font-black text-xl uppercase hover:bg-white hover:shadow-[0_0_50px_rgba(212,175,55,0.4)] transition-all active:scale-95 border-none">
                 {isSubmitting ? 'SEALING_LOGIC...' : 'TRANSMIT LOGIC'}
               </button>
