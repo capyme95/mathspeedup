@@ -1,6 +1,21 @@
 'use client';
 
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import React, { Suspense, useEffect, useState, useCallback, useMemo } from 'react';
+import LearningIntention from '@/components/LearningIntention';
+import WorkedExample from '@/components/WorkedExample';
+import SelfReportedGrade from '@/components/SelfReportedGrade';
+import StructuredFeedback from '@/components/StructuredFeedback';
+import MasteryChart from '@/components/MasteryChart';
+import { WorkedExample as WorkedExampleType } from '@/types';
+
+// Lazy‑load heavier components to reduce initial bundle size
+const AdaptivePathRecommender = React.lazy(() => import('@/components/AdaptivePathRecommender'));
+const RetrievalPractice = React.lazy(() => import('@/components/RetrievalPractice'));
+const MasteryDashboard2 = React.lazy(() => import('@/components/MasteryDashboard2'));
+const CognitiveLoadOptimiser = React.lazy(() => import('@/components/CognitiveLoadOptimiser'));
+const PersonalisedFeedbackEngine = React.lazy(() => import('@/components/PersonalisedFeedbackEngine'));
+import ErrorBoundary from '@/components/ErrorBoundary';
+import FeedbackForm from '@/components/FeedbackForm';
 
 interface Standard { id: string; code: string; title: string; credits: number; }
 interface LearningLog { 
@@ -14,10 +29,25 @@ interface LearningLog {
 export default function Dashboard() {
   const [standards, setStandards] = useState<Standard[]>([]);
   const [logs, setLogs] = useState<LearningLog[]>([]);
+  const [workedExamples, setWorkedExamples] = useState<WorkedExampleType[]>([]);
+  const [feedbackTemplates, setFeedbackTemplates] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [answer, setAnswer] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [submitStatus, setSubmitStatus] = useState<string | null>(null);
+
+  // Environment variable validation (runtime check)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const required = ['NEXT_PUBLIC_SUPABASE_URL', 'NEXT_PUBLIC_SUPABASE_ANON_KEY'];
+      const missing = required.filter(key => !process.env[key]);
+      if (missing.length > 0) {
+        console.warn(`Missing environment variables: ${missing.join(', ')}. Please ensure they are set in Vercel or .env.local.`);
+      } else {
+        console.log('All required environment variables are present.');
+      }
+    }
+  }, []);
 
   // --- Dynamic Environment Factors ---
   const envFactors = useMemo(() => {
@@ -29,21 +59,154 @@ export default function Dashboard() {
     };
   }, []);
 
+  // --- Phase 1: Evidence‑Based Learning Data ---
+  const learningIntention = {
+    intention: 'Formulate and simplify algebraic expressions, solve linear inequalities, and prove properties of consecutive odd integers.',
+    successCriteria: [
+      'Write a simplified expression for combined stall area.',
+      'Solve inequality for maximum rainy weekends given discount factor.',
+      'Prove difference of squares of consecutive odd integers is multiple of 8.',
+      'State assumptions and discuss real‑world limitations.',
+    ],
+    timssDomain: 'Applying' as const,
+  };
+
+  const staticWorkedExamples: WorkedExampleType[] = [
+    {
+      standard_id: 'AS91945',
+      title: 'Combined Area Expression (Achieved)',
+      content_en: `Step 1: Let s = area of Small Artisan Stall.
+Step 2: Area of Large Food Truck = 2s + 5.
+Step 3: Combined area = s + (2s + 5) = 3s + 5.
+Step 4: Simplified expression: 3s + 5.`,
+      difficulty_level: 2,
+      fade_stage: 'full',
+      metadata: { topics: ['algebra', 'expression'], prerequisites: ['basic arithmetic'] },
+    },
+    {
+      standard_id: 'AS91945',
+      title: 'Revenue Threshold Inequality (Merit)',
+      content_en: `Step 1: Revenue model: R = 850 - 75w.
+Step 2: Minimum revenue required: R_min = 400 * d.
+Step 3: Set inequality: 850 - 75w ≥ 400d.
+Step 4: Solve for w: w ≤ (850 - 400d)/75.
+Step 5: Interpret: w must be an integer, round down.`,
+      difficulty_level: 3,
+      fade_stage: 'partial',
+      metadata: { topics: ['linear equations', 'inequalities'], prerequisites: ['substitution'] },
+    },
+    {
+      standard_id: 'AS91945',
+      title: 'Odd Integer Square Difference (Excellence)',
+      content_en: `Step 1: Let consecutive odd integers be 2n+1 and 2n+3.
+Step 2: Square difference: (2n+3)² - (2n+1)².
+Step 3: Expand: (4n²+12n+9) - (4n²+4n+1) = 8n+8.
+Step 4: Factor: 8(n+1). Hence always multiple of 8.
+Step 5: Assumptions: n is integer, odd integers are positive.`,
+      difficulty_level: 4,
+      fade_stage: 'none',
+      metadata: { topics: ['algebraic proof', 'quadratics'], prerequisites: ['expansion'] },
+    },
+  ];
+
+  const handleGradeSubmit = async (grade: string, confidence: number) => {
+    console.log('Self‑reported grade:', grade, 'confidence:', confidence);
+    // POST to learning_logs with new evidence‑based columns
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    if (!url || !key) {
+      alert('Configuration missing: cannot save prediction.');
+      return;
+    }
+    try {
+      const res = await fetch(`${url}/rest/v1/learning_logs`, {
+        method: 'POST',
+        headers: { 
+          'apikey': key, 
+          'Authorization': `Bearer ${key}`, 
+          'Content-Type': 'application/json', 
+          'Prefer': 'return=minimal' 
+        },
+        body: JSON.stringify({
+          session_date: new Date().toISOString().split('T')[0],
+          session_summary: `Self‑reported grade: ${grade}, confidence: ${confidence}%`,
+          logic_fingerprint: [],
+          wombatbot_evaluation: 'Awaiting audit.',
+          self_reported_grade: grade,
+          prediction_accuracy: confidence / 100, // convert percentage to 0‑1
+          cognitive_load_rating: null, // to be filled by CognitiveLoadOptimiser
+          learning_intention: learningIntention.intention,
+          success_criteria: learningIntention.successCriteria,
+          timss_domain: learningIntention.timssDomain
+        })
+      });
+      if (res.ok) {
+        alert(`Prediction recorded: ${grade} at ${confidence}% confidence. Data saved to learning log.`);
+        fetchData(); // refresh logs
+      } else {
+        throw new Error(`HTTP ${res.status}`);
+      }
+    } catch (err) {
+      console.error('Failed to save prediction:', err);
+      alert('Failed to save prediction. Check console.');
+    }
+  };
+
+  // --- Phase 2: Structured Feedback & Mastery Data ---
+  const feedbackItems = [
+    {
+      type: 'task' as const,
+      text: 'Your expression 3s + 5 is correct. Remember to combine like terms and include units if applicable.',
+      templateName: 'Task Feedback – Area Expression',
+    },
+    {
+      type: 'process' as const,
+      text: 'You set up the inequality correctly. Next time, explicitly state the rounding rule for discrete variables like weeks.',
+      templateName: 'Process Feedback – Solving Inequalities',
+    },
+    {
+      type: 'self_regulation' as const,
+      text: 'You identified the key algebraic representation. Consider adding a sentence about the assumptions you made.',
+      templateName: 'Self‑Regulation Feedback – Proof Structure',
+    },
+  ];
+
+  const masteryData = [
+    { domain: 'Knowing' as const, score: 65, trend: 'up' as const },
+    { domain: 'Applying' as const, score: 82, trend: 'stable' as const },
+    { domain: 'Reasoning' as const, score: 45, trend: 'down' as const },
+  ];
+
   const fetchData = useCallback(async () => {
     const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
     if (!url || !key) return;
     const headers: HeadersInit = { 'apikey': key, 'Authorization': `Bearer ${key}` };
     try {
-      const [stdRes, logRes] = await Promise.all([
+      const [stdRes, logRes, examplesRes, feedbackRes] = await Promise.all([
         fetch(`${url}/rest/v1/standards?select=*`, { headers }),
-        fetch(`${url}/rest/v1/learning_logs?select=*&order=session_date.desc&limit=5`, { headers })
+        fetch(`${url}/rest/v1/learning_logs?select=*&order=session_date.desc&limit=5`, { headers }),
+        fetch(`${url}/rest/v1/worked_examples?select=*`, { headers }),
+        fetch(`${url}/rest/v1/feedback_templates?select=*`, { headers })
       ]);
+      if (!stdRes.ok) throw new Error(`Standards fetch failed: ${stdRes.status}`);
+      if (!logRes.ok) throw new Error(`Learning logs fetch failed: ${logRes.status}`);
+      if (!examplesRes.ok) throw new Error(`Worked examples fetch failed: ${examplesRes.status}`);
+      if (!feedbackRes.ok) throw new Error(`Feedback templates fetch failed: ${feedbackRes.status}`);
       const stdData = await stdRes.json();
       const logData = await logRes.json();
+      const examplesData = await examplesRes.json();
+      const feedbackData = await feedbackRes.json();
       setStandards(Array.isArray(stdData) ? stdData : []);
       setLogs(Array.isArray(logData) ? logData : []);
-    } catch (err) { console.error(err); } finally { setLoading(false); }
+      setWorkedExamples(Array.isArray(examplesData) ? examplesData : []);
+      setFeedbackTemplates(Array.isArray(feedbackData) ? feedbackData : []);
+    } catch (err) {
+      console.error('Fetch error:', err);
+      // Optionally set error state for UI
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   const atomizeLogic = (text: string): string[] => {
@@ -82,11 +245,13 @@ export default function Dashboard() {
 
   if (loading) return <div className="min-h-screen bg-[#0D0D0D] text-[#D4AF37] flex items-center justify-center font-mono uppercase tracking-[0.2em]">Synchronizing_Narrative_Core...</div>;
 
+  const examplesToShow = workedExamples.length > 0 ? workedExamples : staticWorkedExamples;
+
   return (
     <div className="min-h-screen bg-[#0D0D0D] text-zinc-300 p-4 md:p-12 font-sans selection:bg-[#D4AF37] selection:text-black">
       <header className="max-w-5xl mx-auto mb-20 flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-[#D4AF37]/30 pb-12">
         <div>
-          <h1 className="text-6xl font-black tracking-tighter uppercase italic text-white leading-none">MathSpeedup <span className="text-[#D4AF37]">1.3</span></h1>
+          <h1 className="text-6xl font-black tracking-tighter uppercase italic text-white leading-none">MathSpeedup <span className="text-[#D4AF37]">2.0</span></h1>
           <p className="text-xs font-mono mt-4 tracking-[0.3em] opacity-40 uppercase">Avondale Sunday Market // NCEA AS91945 // Auckland 2026</p>
         </div>
         <div className="flex flex-col items-end gap-3">
@@ -117,6 +282,340 @@ export default function Dashboard() {
               <span className="opacity-40">Observation_Status</span>
               <span className="text-emerald-500 text-lg font-black">ACTIVE</span>
            </div>
+        </section>
+
+        {/* Phase 1: Evidence‑Based Learning Components */}
+        <section className="border border-[#D4AF37]/30 p-8 md:p-12 bg-[#0a0a0a]">
+          <h2 className="text-4xl font-black uppercase tracking-tight text-white mb-2">
+            MathSpeedup <span className="text-[#D4AF37]">2.0</span> – Evidence‑Based Learning
+          </h2>
+          <p className="text-zinc-400 text-lg mb-10 font-mono uppercase tracking-widest">
+            Integrating Visible Learning, Cognitive Load Theory, and Self‑Reported Grades.
+          </p>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-16">
+            <div className="lg:col-span-2 space-y-10">
+              <LearningIntention
+                intention={learningIntention.intention}
+                successCriteria={learningIntention.successCriteria}
+                timssDomain={learningIntention.timssDomain}
+              />
+              <div>
+                <h3 className="text-2xl font-black uppercase tracking-tight text-white mb-6">
+                  Worked Examples Library
+                </h3>
+                <p className="text-zinc-400 mb-6 text-sm font-mono uppercase tracking-widest">
+                  Cognitive Load Theory – Faded guidance to reduce extraneous load.
+                </p>
+                <div className="space-y-6">
+                  {examplesToShow.map((example, idx) => (
+                    <WorkedExample
+                      key={idx}
+                      title={example.title}
+                      content={example.content_en}
+                      difficulty={example.difficulty_level}
+                      fadeStage={example.fade_stage}
+                      standardCode={example.standard_id}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div>
+              <SelfReportedGrade
+                onGradeSubmit={handleGradeSubmit}
+              />
+              <div className="mt-12 p-6 border border-zinc-800 bg-black/40">
+                <h4 className="text-xl font-black uppercase tracking-tight text-white mb-4">
+                  Why This Works
+                </h4>
+                <ul className="space-y-4 text-sm text-zinc-400">
+                  <li className="flex items-start gap-3">
+                    <span className="text-[#D4AF37] font-black">✓</span>
+                    <span><strong>Visible Learning</strong> (Hattie): Learning intentions & success criteria increase effect size d=0.56.</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="text-[#D4AF37] font-black">✓</span>
+                    <span><strong>Self‑Reported Grades</strong> (Hattie d=1.33): Predictions boost metacognition and accuracy.</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="text-[#D4AF37] font-black">✓</span>
+                    <span><strong>Cognitive Load Theory</strong>: Worked examples reduce working‑memory overload.</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="text-[#D4AF37] font-black">✓</span>
+                    <span><strong>TIMSS Cognitive Domains</strong>: Knowing, Applying, Reasoning for balanced assessment.</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Phase 2: Structured Feedback & Mastery */}
+        <section className="border border-[#D4AF37]/30 p-8 md:p-12 bg-[#0a0a0a]">
+          <h2 className="text-4xl font-black uppercase tracking-tight text-white mb-2">
+            Phase 2 – Feedback & Mastery
+          </h2>
+          <p className="text-zinc-400 text-lg mb-10 font-mono uppercase tracking-widest">
+            Structured feedback templates and mastery tracking across TIMSS cognitive domains.
+          </p>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+            <div>
+              <StructuredFeedback
+                feedbackItems={feedbackItems}
+                standardCode="AS91945"
+              />
+            </div>
+            <div>
+              <MasteryChart
+                domains={masteryData}
+                studentName="Sebastian"
+              />
+            </div>
+          </div>
+
+          <div className="p-6 border border-zinc-800 bg-black/40">
+            <h4 className="text-xl font-black uppercase tracking-tight text-white mb-4">
+              Integration Notes
+            </h4>
+            <ul className="space-y-3 text-sm text-zinc-400">
+              <li className="flex items-start gap-3">
+                <span className="text-[#D4AF37] font-black">✓</span>
+                <span><strong>Structured Feedback</strong> uses Hattie’s three feedback types (task, process, self‑regulation) to increase effect size d=0.70–0.79.</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-[#D4AF37] font-black">✓</span>
+                <span><strong>Mastery Charts</strong> track progress across TIMSS cognitive domains, enabling targeted intervention.</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-[#D4AF37] font-black">✓</span>
+                <span><strong>Next Step</strong>: Connect to Supabase tables (<code>feedback_templates</code>, <code>learning_logs</code>) for dynamic data.</span>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        {/* Phase 3: Adaptive Learning Paths */}
+        <section className="border border-[#D4AF37]/40 p-8 md:p-12 bg-[#0a0a0a]">
+          <h2 className="text-4xl font-black uppercase tracking-tight text-white mb-2">
+            Phase 3 – Adaptive Learning Paths
+          </h2>
+          <p className="text-zinc-400 text-lg mb-10 font-mono uppercase tracking-widest">
+            Real‑time task sequencing based on cognitive load, performance history, and spaced repetition.
+          </p>
+
+          <div className="mb-16">
+            <Suspense fallback={
+              <div className="border border-[#D4AF37]/20 p-8 text-center text-zinc-400 animate-pulse">
+                Loading adaptive paths…
+              </div>
+            }>
+              <AdaptivePathRecommender
+                logs={logs}
+                currentStandard="AS91945"
+              />
+            </Suspense>
+          </div>
+
+          <div className="p-6 border border-zinc-800 bg-black/40">
+            <h4 className="text-xl font-black uppercase tracking-tight text-white mb-4">
+              How Adaptive Paths Work
+            </h4>
+            <ul className="space-y-3 text-sm text-zinc-400">
+              <li className="flex items-start gap-3">
+                <span className="text-[#D4AF37] font-black">✓</span>
+                <span><strong>Rule‑Based Engine</strong>: Analyses your recent learning logs to identify the weakest TIMSS cognitive domain and recommends targeted practice.</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-[#D4AF37] font-black">✓</span>
+                <span><strong>Difficulty Calibration</strong>: Adjusts task difficulty (Achieved/Merit/Excellence) based on your prediction‑accuracy history.</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-[#D4AF37] font-black">✓</span>
+                <span><strong>Future Upgrades</strong>: Will incorporate Bayesian knowledge tracing, spaced‑repetition scheduling, and personalised feedback generation.</span>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        {/* Phase 3: Retrieval Practice */}
+        <section className="border border-[#D4AF37]/30 p-8 md:p-12 bg-[#0a0a0a]">
+          <h2 className="text-4xl font-black uppercase tracking-tight text-white mb-2">
+            Phase 3 – Retrieval Practice (Testing Effect)
+          </h2>
+          <p className="text-zinc-400 text-lg mb-10 font-mono uppercase tracking-widest">
+            Active recall quizzes to strengthen long‑term retention and calibrate confidence.
+          </p>
+
+          <div className="mb-16">
+            <Suspense fallback={
+              <div className="border border-[#D4AF37]/20 p-8 text-center text-zinc-400 animate-pulse">
+                Loading retrieval practice…
+              </div>
+            }>
+              <RetrievalPractice />
+            </Suspense>
+          </div>
+
+          <div className="p-6 border border-zinc-800 bg-black/40">
+            <h4 className="text-xl font-black uppercase tracking-tight text-white mb-4">
+              How Retrieval Practice Works
+            </h4>
+            <ul className="space-y-3 text-sm text-zinc-400">
+              <li className="flex items-start gap-3">
+                <span className="text-[#D4AF37] font-black">✓</span>
+                <span><strong>Testing Effect</strong>: Actively retrieving information from memory strengthens neural pathways more than passive review (Roediger & Karpicke, 2006).</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-[#D4AF37] font-black">✓</span>
+                <span><strong>Confidence Calibration</strong>: Rating your certainty before feedback helps align self‑assessment with actual knowledge (metacognitive accuracy).</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-[#D4AF37] font-black">✓</span>
+                <span><strong>Spaced Repetition</strong>: This module will later schedule reviews based on a forgetting curve (Ebbinghaus, 1885) to maximise retention.</span>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        {/* Phase 3 - Mastery Dashboard 2.0 */}
+        <section className="border border-[#D4AF37]/30 p-8 md:p-16 relative bg-black/40">
+          <div className="absolute -top-5 left-10 bg-[#0D0D0D] border-2 border-[#D4AF37] px-8 py-1.5 font-black uppercase text-sm tracking-[0.3em] text-[#D4AF37]">
+            Phase 3 – Mastery Dashboard 2.0
+          </div>
+          <h2 className="text-4xl font-black text-white uppercase mb-8 tracking-tight mt-12">
+            Mastery Forecasting & Progress Analytics
+          </h2>
+          <p className="text-zinc-400 text-lg mb-10 font-mono uppercase tracking-widest">
+            Interactive line charts with trend prediction and confidence intervals.
+          </p>
+
+          <div className="mb-16">
+            <Suspense fallback={
+              <div className="border border-[#D4AF37]/20 p-8 text-center text-zinc-400 animate-pulse">
+                Loading mastery dashboard…
+              </div>
+            }>
+              <MasteryDashboard2 />
+            </Suspense>
+          </div>
+
+          <div className="p-6 border border-zinc-800 bg-black/40">
+            <h4 className="text-xl font-black uppercase tracking-tight text-white mb-4">
+              How Forecasting Works
+            </h4>
+            <ul className="space-y-3 text-sm text-zinc-400">
+              <li className="flex items-start gap-3">
+                <span className="text-[#D4AF37] font-black">✓</span>
+                <span><strong>Linear Regression</strong>: Fits a trend line to your historical mastery scores per TIMSS domain to predict future performance.</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-[#D4AF37] font-black">✓</span>
+                <span><strong>Confidence Intervals</strong>: The shaded area around the forecast line represents uncertainty—wider when data is sparse or variable.</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-[#D4AF37] font-black">✓</span>
+                <span><strong>Comparative Benchmarking</strong>: Later versions will show how your progress rate compares to similar students (percentile ranking).</span>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        {/* Phase 3 - Cognitive Load Optimiser */}
+        <section className="border border-[#D4AF37]/30 p-8 md:p-16 relative bg-black/40 mt-16">
+          <div className="absolute -top-5 left-10 bg-[#0D0D0D] border-2 border-[#D4AF37] px-8 py-1.5 font-black uppercase text-sm tracking-[0.3em] text-[#D4AF37]">
+            Phase 3 – Cognitive‑Load Optimiser
+          </div>
+          <h2 className="text-4xl font-black text-white uppercase mb-8 tracking-tight mt-12">
+            Adaptive Interface for Working Memory
+          </h2>
+          <p className="text-zinc-400 text-lg mb-10 font-mono uppercase tracking-widest">
+            Self‑report your cognitive load and toggle a simplified view to reduce extraneous mental effort.
+          </p>
+
+          <div className="mb-16">
+            <Suspense fallback={
+              <div className="border border-[#D4AF37]/20 p-8 text-center text-zinc-400 animate-pulse">
+                Loading cognitive load optimiser…
+              </div>
+            }>
+              <CognitiveLoadOptimiser />
+            </Suspense>
+          </div>
+
+          <div className="p-6 border border-zinc-800 bg-black/40">
+            <h4 className="text-xl font-black uppercase tracking-tight text-white mb-4">
+              Why Cognitive Load Matters
+            </h4>
+            <ul className="space-y-3 text-sm text-zinc-400">
+              <li className="flex items-start gap-3">
+                <span className="text-[#D4AF37] font-black">✓</span>
+                <span><strong>Sweller&apos;s Theory (1988)</strong>: Working memory is limited; effective learning requires optimising intrinsic load, minimising extraneous load, and increasing germane load.</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-[#D4AF37] font-black">✓</span>
+                <span><strong>Expertise Reversal Effect</strong>: What helps novices (detailed guidance) can hinder experts. Simplified view removes unnecessary scaffolding as you progress.</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-[#D4AF37] font-black">✓</span>
+                <span><strong>Metacognitive Awareness</strong>: Rating your own cognitive load builds self‑monitoring skills, a key component of self‑regulated learning.</span>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        {/* Phase 3: Personalised Feedback Engine */}
+        <section className="border border-[#D4AF37]/30 p-8 md:p-16 relative bg-black/40 mt-16">
+          <div className="absolute -top-5 left-10 bg-[#0D0D0D] border-2 border-[#D4AF37] px-8 py-1.5 font-black uppercase text-sm tracking-[0.3em] text-[#D4AF37]">
+            Phase 3 – Personalised Feedback Engine
+          </div>
+          <h2 className="text-4xl font-black text-white uppercase mb-8 tracking-tight mt-12">
+            Adaptive Feedback Generation
+          </h2>
+          <p className="text-zinc-400 text-lg mb-10 font-mono uppercase tracking-widest">
+            Real‑time feedback that adapts to your performance patterns, cognitive load, and self‑reported confidence.
+          </p>
+
+          <div className="mb-16">
+            <Suspense fallback={
+              <div className="border border-[#D4AF37]/20 p-8 text-center text-zinc-400 animate-pulse">
+                Loading personalised feedback engine…
+              </div>
+            }>
+              <PersonalisedFeedbackEngine
+                logs={logs}
+                workedExamples={workedExamples}
+                feedbackTemplates={feedbackTemplates}
+                currentStandard="AS91945"
+              />
+            </Suspense>
+          </div>
+
+          <div className="p-6 border border-zinc-800 bg-black/40">
+            <h4 className="text-xl font-black uppercase tracking-tight text-white mb-4">
+              How Personalised Feedback Works
+            </h4>
+            <ul className="space-y-3 text-sm text-zinc-400">
+              <li className="flex items-start gap-3">
+                <span className="text-[#D4AF37] font-black">✓</span>
+                <span><strong>Hattie’s Feedback (d = 0.79)</strong>: This engine combines task, process, and self‑regulation feedback tailored to your current learning state.</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-[#D4AF37] font-black">✓</span>
+                <span><strong>TIMSS Domain Targeting</strong>: Identifies your weakest cognitive domain (Knowing, Applying, Reasoning) and prioritises feedback for that area.</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-[#D4AF37] font-black">✓</span>
+                <span><strong>Data‑Driven Insights</strong>: Uses your self‑reported grades, prediction accuracy, and cognitive load ratings to adjust feedback tone and content.</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-[#D4AF37] font-black">✓</span>
+                <span><strong>Template‑Based + Rule‑Based</strong>: Merges pre‑written feedback templates from the database with real‑time performance analysis.</span>
+              </li>
+            </ul>
+          </div>
         </section>
 
         <section className="border border-[#D4AF37]/50 p-8 md:p-20 relative bg-[#111111] shadow-[30px_30px_60px_rgba(0,0,0,0.5)]">
@@ -212,6 +711,38 @@ export default function Dashboard() {
                 </div>
               </div>
             ))}
+          </div>
+        </section>
+
+        {/* Phase 4: User Feedback Collection */}
+        <section className="border border-[#D4AF37]/20 p-8 md:p-16 bg-black/30 mt-32">
+          <h2 className="text-4xl font-black uppercase tracking-tight text-white mb-2">
+            Phase 4 – User Feedback & Monitoring
+          </h2>
+          <p className="text-zinc-400 text-lg mb-10 font-mono uppercase tracking-widest">
+            Help us improve the learning experience. Your ratings and comments are stored securely and reviewed regularly.
+          </p>
+          <div className="max-w-2xl mx-auto">
+            <FeedbackForm />
+          </div>
+          <div className="mt-12 p-6 border border-zinc-800 bg-black/40">
+            <h4 className="text-xl font-black uppercase tracking-tight text-white mb-4">
+              Why Your Feedback Matters
+            </h4>
+            <ul className="space-y-3 text-sm text-zinc-400">
+              <li className="flex items-start gap-3">
+                <span className="text-[#D4AF37] font-black">✓</span>
+                <span><strong>Continuous Improvement</strong>: Every rating and comment is analysed to prioritise feature development and bug fixes.</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-[#D4AF37] font-black">✓</span>
+                <span><strong>Personalisation</strong>: Feedback helps us calibrate the difficulty, tone, and pacing of the adaptive learning paths.</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-[#D4AF37] font-black">✓</span>
+                <span><strong>Research Validation</strong>: Your experience contributes to the evidence base for integrating Visible Learning, Cognitive Load Theory, and Self‑Reported Grades in real‑world settings.</span>
+              </li>
+            </ul>
           </div>
         </section>
       </main>
