@@ -21,7 +21,7 @@ const MasteryDashboard2: React.FC<MasteryDashboard2Props> = ({
   showForecast = true,
 }) => {
   // Process data for chart
-  const { points, domains, dateLabels } = useMemo(() => {
+  const { points, dateLabels } = useMemo(() => {
     const sorted = [...historicalData].sort((a, b) => a.date.localeCompare(b.date));
     const points = sorted.map((d, idx) => ({
       ...d,

@@ -45,6 +45,7 @@ interface PersonalisedFeedbackEngineProps {
  */
 const PersonalisedFeedbackEngine: React.FC<PersonalisedFeedbackEngineProps> = ({
   logs,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   workedExamples,
   feedbackTemplates,
   currentStandard = 'AS91945'

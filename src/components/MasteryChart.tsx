@@ -23,7 +23,7 @@ const MasteryChart: React.FC<MasteryChartProps> = ({
     Reasoning: '#8B5CF6', // violet
   };
 
-  const maxScore = 100;
+
 
   return (
     <div className="border border-[#D4AF37]/30 bg-black/40 p-8">

@@ -29,7 +29,7 @@ export default function Dashboard() {
   const [standards, setStandards] = useState<Standard[]>([]); // eslint-disable-line @typescript-eslint/no-unused-vars
   const [logs, setLogs] = useState<LearningLog[]>([]);
   const [workedExamples, setWorkedExamples] = useState<WorkedExampleType[]>([]);
-  const [feedbackTemplates, setFeedbackTemplates] = useState<unknown[]>([]);
+  const [feedbackTemplates, setFeedbackTemplates] = useState<any[]>([]); // eslint-disable-line @typescript-eslint/no-explicit-any
   const [loading, setLoading] = useState<boolean>(true);
   const [answer, setAnswer] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -237,7 +237,7 @@ Step 5: Assumptions: n is integer, odd integers are positive.`,
       });
       if (res.ok) { setSubmitStatus('SUCCESS: LOGIC SEALED'); setAnswer(''); fetchData(); }
       else { throw new Error('FAIL'); }
-    } catch (_err) { setSubmitStatus('ERROR: CONNECTION COLLAPSE'); } finally { setIsSubmitting(false); setTimeout(() => setSubmitStatus(null), 5000); }
+    } catch { setSubmitStatus('ERROR: CONNECTION COLLAPSE'); } finally { setIsSubmitting(false); setTimeout(() => setSubmitStatus(null), 5000); }
   };
 
   useEffect(() => { fetchData(); const interval = setInterval(fetchData, 15000); return () => clearInterval(interval); }, [fetchData]);

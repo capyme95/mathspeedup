@@ -14,7 +14,7 @@ interface AdaptivePathRecommenderProps {
 
 export default function AdaptivePathRecommender({
   logs = [],
-  currentStandard = 'AS91945',
+
 }: AdaptivePathRecommenderProps) {
   // Simple rule‑based recommendation (placeholder for future ML/decision tree).
   const recommendNextTask = (): {
