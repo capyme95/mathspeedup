@@ -529,20 +529,20 @@ Step 5: Assumptions: n is integer, odd integers are positive.`,
         </section>
 
         {/* Phase 3 - Mastery Dashboard 2.0 */}
-        <section className="border border-[#D4AF37]/30 p-8 md:p-16 relative bg-black/40">
-          <div className="absolute -top-5 left-10 bg-[#0D0D0D] border-2 border-[#D4AF37] px-8 py-1.5 font-black uppercase text-sm tracking-[0.3em] text-[#D4AF37]">
+        <section className="border border-transparent p-8 md:p-16 relative bg-white rounded-xl shadow-sm border border-gray-100">
+          <div className="absolute -top-5 left-10 bg-[#0D0D0D] border-2 border-blue-500 px-8 py-1.5 font-black uppercase text-sm tracking-[0.3em] text-[#D4AF37]">
             Phase 3 – Mastery Dashboard 2.0
           </div>
-          <h2 className="text-4xl font-black text-white uppercase mb-8 tracking-tight mt-12">
+          <h2 className="text-4xl font-black text-gray-900 uppercase mb-8 tracking-tight mt-12">
             Mastery Forecasting & Progress Analytics
           </h2>
-          <p className="text-zinc-400 text-lg mb-10 font-mono uppercase tracking-widest">
+          <p className="text-gray-600 text-lg mb-10 font-mono uppercase tracking-widest">
             Interactive line charts with trend prediction and confidence intervals.
           </p>
 
           <div className="mb-16">
             <Suspense fallback={
-              <div className="border border-[#D4AF37]/20 p-8 text-center text-zinc-400 animate-pulse">
+              <div className="border border-transparent p-8 text-center text-gray-600 animate-pulse">
                 Loading mastery dashboard…
               </div>
             }>
@@ -550,11 +550,11 @@ Step 5: Assumptions: n is integer, odd integers are positive.`,
             </Suspense>
           </div>
 
-          <div className="p-6 border border-zinc-800 bg-black/40">
-            <h4 className="text-xl font-black uppercase tracking-tight text-white mb-4">
+          <div className="p-6 border border-gray-100 bg-white rounded-xl shadow-sm border border-gray-100">
+            <h4 className="text-xl font-black uppercase tracking-tight text-gray-900 mb-4">
               How Forecasting Works
             </h4>
-            <ul className="space-y-3 text-sm text-zinc-400">
+            <ul className="space-y-3 text-sm text-gray-600">
               <li className="flex items-start gap-3">
                 <span className="text-[#D4AF37] font-black">✓</span>
                 <span><strong>Linear Regression</strong>: Fits a trend line to your historical mastery scores per TIMSS domain to predict future performance.</span>
@@ -572,20 +572,20 @@ Step 5: Assumptions: n is integer, odd integers are positive.`,
         </section>
 
         {/* Phase 3 - Cognitive Load Optimiser */}
-        <section className="border border-[#D4AF37]/30 p-8 md:p-16 relative bg-black/40 mt-16">
-          <div className="absolute -top-5 left-10 bg-[#0D0D0D] border-2 border-[#D4AF37] px-8 py-1.5 font-black uppercase text-sm tracking-[0.3em] text-[#D4AF37]">
+        <section className="border border-transparent p-8 md:p-16 relative bg-white rounded-xl shadow-sm border border-gray-100 mt-16">
+          <div className="absolute -top-5 left-10 bg-[#0D0D0D] border-2 border-blue-500 px-8 py-1.5 font-black uppercase text-sm tracking-[0.3em] text-[#D4AF37]">
             Phase 3 – Cognitive‑Load Optimiser
           </div>
-          <h2 className="text-4xl font-black text-white uppercase mb-8 tracking-tight mt-12">
+          <h2 className="text-4xl font-black text-gray-900 uppercase mb-8 tracking-tight mt-12">
             Adaptive Interface for Working Memory
           </h2>
-          <p className="text-zinc-400 text-lg mb-10 font-mono uppercase tracking-widest">
+          <p className="text-gray-600 text-lg mb-10 font-mono uppercase tracking-widest">
             Self‑report your cognitive load and toggle a simplified view to reduce extraneous mental effort.
           </p>
 
           <div className="mb-16">
             <Suspense fallback={
-              <div className="border border-[#D4AF37]/20 p-8 text-center text-zinc-400 animate-pulse">
+              <div className="border border-transparent p-8 text-center text-gray-600 animate-pulse">
                 Loading cognitive load optimiser…
               </div>
             }>
@@ -593,11 +593,11 @@ Step 5: Assumptions: n is integer, odd integers are positive.`,
             </Suspense>
           </div>
 
-          <div className="p-6 border border-zinc-800 bg-black/40">
-            <h4 className="text-xl font-black uppercase tracking-tight text-white mb-4">
+          <div className="p-6 border border-gray-100 bg-white rounded-xl shadow-sm border border-gray-100">
+            <h4 className="text-xl font-black uppercase tracking-tight text-gray-900 mb-4">
               Why Cognitive Load Matters
             </h4>
-            <ul className="space-y-3 text-sm text-zinc-400">
+            <ul className="space-y-3 text-sm text-gray-600">
               <li className="flex items-start gap-3">
                 <span className="text-[#D4AF37] font-black">✓</span>
                 <span><strong>Sweller&apos;s Theory (1988)</strong>: Working memory is limited; effective learning requires optimising intrinsic load, minimising extraneous load, and increasing germane load.</span>
@@ -615,20 +615,20 @@ Step 5: Assumptions: n is integer, odd integers are positive.`,
         </section>
 
         {/* Phase 3: Personalised Feedback Engine */}
-        <section className="border border-[#D4AF37]/30 p-8 md:p-16 relative bg-black/40 mt-16">
-          <div className="absolute -top-5 left-10 bg-[#0D0D0D] border-2 border-[#D4AF37] px-8 py-1.5 font-black uppercase text-sm tracking-[0.3em] text-[#D4AF37]">
+        <section className="border border-transparent p-8 md:p-16 relative bg-white rounded-xl shadow-sm border border-gray-100 mt-16">
+          <div className="absolute -top-5 left-10 bg-[#0D0D0D] border-2 border-blue-500 px-8 py-1.5 font-black uppercase text-sm tracking-[0.3em] text-[#D4AF37]">
             Phase 3 – Personalised Feedback Engine
           </div>
-          <h2 className="text-4xl font-black text-white uppercase mb-8 tracking-tight mt-12">
+          <h2 className="text-4xl font-black text-gray-900 uppercase mb-8 tracking-tight mt-12">
             Adaptive Feedback Generation
           </h2>
-          <p className="text-zinc-400 text-lg mb-10 font-mono uppercase tracking-widest">
+          <p className="text-gray-600 text-lg mb-10 font-mono uppercase tracking-widest">
             Real‑time feedback that adapts to your performance patterns, cognitive load, and self‑reported confidence.
           </p>
 
           <div className="mb-16">
             <Suspense fallback={
-              <div className="border border-[#D4AF37]/20 p-8 text-center text-zinc-400 animate-pulse">
+              <div className="border border-transparent p-8 text-center text-gray-600 animate-pulse">
                 Loading personalised feedback engine…
               </div>
             }>
@@ -641,11 +641,11 @@ Step 5: Assumptions: n is integer, odd integers are positive.`,
             </Suspense>
           </div>
 
-          <div className="p-6 border border-zinc-800 bg-black/40">
-            <h4 className="text-xl font-black uppercase tracking-tight text-white mb-4">
+          <div className="p-6 border border-gray-100 bg-white rounded-xl shadow-sm border border-gray-100">
+            <h4 className="text-xl font-black uppercase tracking-tight text-gray-900 mb-4">
               How Personalised Feedback Works
             </h4>
-            <ul className="space-y-3 text-sm text-zinc-400">
+            <ul className="space-y-3 text-sm text-gray-600">
               <li className="flex items-start gap-3">
                 <span className="text-[#D4AF37] font-black">✓</span>
                 <span><strong>Hattie’s Feedback (d = 0.79)</strong>: This engine combines task, process, and self‑regulation feedback tailored to your current learning state.</span>
@@ -666,18 +666,18 @@ Step 5: Assumptions: n is integer, odd integers are positive.`,
           </div>
         </section>
 
-        <section className="border border-[#D4AF37]/50 p-8 md:p-20 relative bg-[#111111] shadow-[30px_30px_60px_rgba(0,0,0,0.5)]">
-          <div className="absolute -top-5 left-10 bg-[#0D0D0D] border-2 border-[#D4AF37] px-8 py-1.5 font-black uppercase text-sm tracking-[0.3em] text-[#D4AF37]">Internal Assessment Project</div>
+        <section className="border border-blue-500/50 p-8 md:p-20 relative bg-[#111111] shadow-[30px_30px_60px_rgba(0,0,0,0.5)]">
+          <div className="absolute -top-5 left-10 bg-[#0D0D0D] border-2 border-blue-500 px-8 py-1.5 font-black uppercase text-sm tracking-[0.3em] text-[#D4AF37]">Internal Assessment Project</div>
           
           <div className="space-y-20 mb-24">
             <div className="prose prose-invert max-w-none">
-              <h2 className="text-4xl font-black text-white uppercase mb-8 tracking-tight">Project: Sunday Market Expansion</h2>
-              <p className="text-xl leading-relaxed text-zinc-400 italic font-light border-l-4 border-[#D4AF37]/40 pl-10 mb-16">
+              <h2 className="text-4xl font-black text-gray-900 uppercase mb-8 tracking-tight">Project: Sunday Market Expansion</h2>
+              <p className="text-xl leading-relaxed text-gray-600 italic font-light border-l-4 border-blue-500/40 pl-10 mb-16">
                 &quot;Sebastian has been appointed as a Logic Consultant for the Avondale Sunday Market organisers. To accommodate a growing number of vendors, he must design a scalable spatial model and predict the financial impact of weather-related attendance fluctuations.&quot;
               </p>
 
               <div className="space-y-16">
-                <div className="bg-black/40 p-10 border-l-2 border-[#D4AF37]">
+                <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-10 border-l-2 border-blue-500">
                   <h3 className="text-2xl font-black text-[#D4AF37] uppercase mb-6 tracking-wide">[ Phase 1: Spatial Geometry - Achieved ]</h3>
                   <p className="text-lg text-zinc-300 leading-relaxed">
                     The layout consists of two primary unit types. A <b>Small Artisan Stall</b> requires <i>s</i> square metres of ground space. A <b>Large Food Truck Module</b> is more demanding, requiring 5 square metres more than twice the space of the Artisan Stall. 
@@ -686,12 +686,12 @@ Step 5: Assumptions: n is integer, odd integers are positive.`,
                   </p>
                 </div>
 
-                <div className="bg-black/40 p-10 border-l-2 border-[#D4AF37]">
+                <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-10 border-l-2 border-blue-500">
                   <h3 className="text-2xl font-black text-[#D4AF37] uppercase mb-6 tracking-wide">[ Phase 2: Revenue Thresholds - Merit ]</h3>
                   <p className="text-lg text-zinc-300 leading-relaxed">
                     Based on the footprint established in Phase 1, the market&apos;s total weekly revenue (<i>R</i>), measured in dollars, is expected to decrease as the number of consecutive rainy weekends (<i>w</i>) increases. The organisers provide the following dynamic linear model:
                     <br/><br/>
-                    <span className="text-4xl font-bold text-white block py-6 underline decoration-[#D4AF37]/40 tracking-widest text-center italic font-mono">R = 850 - (75 * w)</span>
+                    <span className="text-4xl font-bold text-gray-900 block py-6 underline decoration-[#D4AF37]/40 tracking-widest text-center italic font-mono">R = 850 - (75 * w)</span>
                     <br/>
                     <strong>Dynamic Constraint:</strong> Due to current conditions, a market discount factor <i>d</i> of <b>{envFactors.discountRate}</b> applies to the required minimum revenue. 
                     <br/><br/>
@@ -699,7 +699,7 @@ Step 5: Assumptions: n is integer, odd integers are positive.`,
                   </p>
                 </div>
 
-                <div className="bg-black/40 p-10 border-l-2 border-[#D4AF37]">
+                <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-10 border-l-2 border-blue-500">
                   <h3 className="text-2xl font-black text-[#D4AF37] uppercase mb-6 tracking-wide">[ Phase 3: Patterns & Generalisation - Excellence ]</h3>
                   <p className="text-lg text-zinc-300 leading-relaxed">
                     To optimize the concentric layout of stalls around the central hub, Sebastian notices that vendor growth follows a pattern of consecutive odd integers. He needs to verify a core scaling rule for the expansion rings.
@@ -713,10 +713,10 @@ Step 5: Assumptions: n is integer, odd integers are positive.`,
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="border-t border-[#D4AF37]/30 pt-20">
+          <form onSubmit={handleSubmit} className="border-t border-transparent pt-20">
             <h4 className="font-black uppercase text-xs tracking-[0.5em] mb-8 text-[#D4AF37]/60 text-center italic">Transmit Logic Fingerprints for Expert Audit</h4>
             <textarea 
-              className="w-full bg-[#0D0D0D] border-2 border-zinc-800 p-10 text-white text-2xl font-mono min-h-[450px] outline-none focus:border-[#D4AF37] transition-all placeholder:opacity-10"
+              className="w-full bg-[#0D0D0D] border-2 border-gray-100 p-10 text-gray-900 text-2xl font-mono min-h-[450px] outline-none focus:border-blue-500 transition-all placeholder:opacity-10"
               placeholder="Structure your proof and working here (e.g., Step 1, Step 2...)"
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}
@@ -727,18 +727,18 @@ Step 5: Assumptions: n is integer, odd integers are positive.`,
                 {isSubmitting ? 'SEALING_LOGIC...' : 'TRANSMIT LOGIC'}
               </button>
             </div>
-            {submitStatus && <div className="mt-10 bg-white text-black p-5 text-center font-black uppercase tracking-widest text-lg border-4 border-[#D4AF37]">{submitStatus}</div>}
+            {submitStatus && <div className="mt-10 bg-white text-black p-5 text-center font-black uppercase tracking-widest text-lg border-4 border-blue-500">{submitStatus}</div>}
           </form>
         </section>
 
         <section className="space-y-16 pb-48">
-          <h2 className="text-4xl font-black uppercase tracking-tighter italic text-white flex items-center gap-6">
+          <h2 className="text-4xl font-black uppercase tracking-tighter italic text-gray-900 flex items-center gap-6">
             Atomic Logic Trail
             <span className="h-px flex-1 bg-gradient-to-r from-[#D4AF37] to-transparent opacity-20"></span>
           </h2>
           <div className="space-y-24">
             {logs.map((log) => (
-              <div key={log.id} className="border border-white/5 p-12 bg-[#0a0a0a] hover:border-[#D4AF37]/20 transition-all group">
+              <div key={log.id} className="border border-white/5 p-12 bg-[#0a0a0a] hover:border-transparent transition-all group">
                 <div className="flex justify-between font-mono text-[10px] text-[#D4AF37] opacity-40 mb-12 uppercase tracking-[0.4em]">
                   <span>Observed: {log.session_date}</span>
                   <span className="group-hover:opacity-100 transition-opacity underline underline-offset-4 tracking-tighter">Provenance_Secured</span>
@@ -753,7 +753,7 @@ Step 5: Assumptions: n is integer, odd integers are positive.`,
                   ))}
                 </div>
 
-                <div className="bg-black p-10 border-l-4 border-[#D4AF37] text-base text-zinc-500 font-mono italic leading-relaxed">
+                <div className="bg-white p-10 border-l-4 border-blue-500 text-base text-gray-500 font-mono italic leading-relaxed">
                    <span className="text-[#D4AF37] font-black block mb-4 uppercase text-[10px] tracking-[0.2em] underline">[WOMBATBOT_ATOMIC_AUDIT]</span>
                    {log.wombatbot_evaluation}
                 </div>
@@ -763,21 +763,21 @@ Step 5: Assumptions: n is integer, odd integers are positive.`,
         </section>
 
         {/* Phase 4: User Feedback Collection */}
-        <section className="border border-[#D4AF37]/20 p-8 md:p-16 bg-black/30 mt-32">
-          <h2 className="text-4xl font-black uppercase tracking-tight text-white mb-2">
+        <section className="border border-transparent p-8 md:p-16 bg-white rounded-2xl shadow-lg border border-gray-100 mt-32">
+          <h2 className="text-4xl font-black uppercase tracking-tight text-gray-900 mb-2">
             Phase 4 – User Feedback & Monitoring
           </h2>
-          <p className="text-zinc-400 text-lg mb-10 font-mono uppercase tracking-widest">
+          <p className="text-gray-600 text-lg mb-10 font-mono uppercase tracking-widest">
             Help us improve the learning experience. Your ratings and comments are stored securely and reviewed regularly.
           </p>
           <div className="max-w-2xl mx-auto">
             <FeedbackForm />
           </div>
-          <div className="mt-12 p-6 border border-zinc-800 bg-black/40">
-            <h4 className="text-xl font-black uppercase tracking-tight text-white mb-4">
+          <div className="mt-12 p-6 border border-gray-100 bg-white rounded-xl shadow-sm border border-gray-100">
+            <h4 className="text-xl font-black uppercase tracking-tight text-gray-900 mb-4">
               Why Your Feedback Matters
             </h4>
-            <ul className="space-y-3 text-sm text-zinc-400">
+            <ul className="space-y-3 text-sm text-gray-600">
               <li className="flex items-start gap-3">
                 <span className="text-[#D4AF37] font-black">✓</span>
                 <span><strong>Continuous Improvement</strong>: Every rating and comment is analysed to prioritise feature development and bug fixes.</span>

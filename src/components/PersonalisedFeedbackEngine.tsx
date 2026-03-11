@@ -153,10 +153,10 @@ const PersonalisedFeedbackEngine: React.FC<PersonalisedFeedbackEngineProps> = ({
   if (logs.length === 0 && feedbackTemplates.length === 0) {
     return (
       <div className="border border-[#D4AF37]/30 p-8 bg-[#0a0a0a]">
-        <h3 className="text-2xl font-black uppercase tracking-tight text-white mb-4">
+        <h3 className="text-2xl font-black uppercase tracking-tight text-gray-900 mb-4">
           Personalised Feedback Engine
         </h3>
-        <p className="text-zinc-400 mb-6 text-sm font-mono uppercase tracking-widest">
+        <p className="text-gray-600 mb-6 text-sm font-mono uppercase tracking-widest">
           Waiting for learning data. Complete a task to receive adaptive feedback.
         </p>
         <div className="space-y-4 text-zinc-500">
@@ -169,16 +169,16 @@ const PersonalisedFeedbackEngine: React.FC<PersonalisedFeedbackEngineProps> = ({
 
   return (
     <div className="border border-[#D4AF37]/30 p-8 bg-[#0a0a0a]">
-      <h3 className="text-2xl font-black uppercase tracking-tight text-white mb-4">
+      <h3 className="text-2xl font-black uppercase tracking-tight text-gray-900 mb-4">
         Personalised Feedback Engine
       </h3>
-      <p className="text-zinc-400 mb-6 text-sm font-mono uppercase tracking-widest">
+      <p className="text-gray-600 mb-6 text-sm font-mono uppercase tracking-widest">
         Adaptive feedback based on your recent performance in {weakDomain}.
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
         {personalisedMessages.map((msg, idx) => (
-          <div key={idx} className={`border ${msg.type === 'task' ? 'border-emerald-500/40' : msg.type === 'process' ? 'border-blue-500/40' : 'border-purple-500/40'} p-6 bg-black/40`}>
+          <div key={idx} className={`border ${msg.type === 'task' ? 'border-emerald-500/40' : msg.type === 'process' ? 'border-blue-500/40' : 'border-purple-500/40'} p-6 bg-white rounded-xl shadow-sm`}>
             <div className="flex items-center gap-3 mb-3">
               <span className={`text-xs font-mono uppercase tracking-widest px-3 py-1 ${msg.type === 'task' ? 'bg-emerald-900/60 text-emerald-300' : msg.type === 'process' ? 'bg-blue-900/60 text-blue-300' : 'bg-purple-900/60 text-purple-300'}`}>
                 {msg.type.replace('_', ' ')}
@@ -187,38 +187,38 @@ const PersonalisedFeedbackEngine: React.FC<PersonalisedFeedbackEngineProps> = ({
                 {idx === 0 ? 'Highest priority' : 'Additional insight'}
               </span>
             </div>
-            <p className="text-zinc-300 leading-relaxed">{msg.text}</p>
+            <p className="text-gray-700 leading-relaxed">{msg.text}</p>
           </div>
         ))}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
         <div className="space-y-3">
-          <h4 className="text-lg font-bold text-white uppercase tracking-tight">Performance Snapshot</h4>
-          <ul className="space-y-2 text-zinc-400">
+          <h4 className="text-lg font-bold text-gray-900 uppercase tracking-tight">Performance Snapshot</h4>
+          <ul className="space-y-2 text-gray-600">
             <li className="flex justify-between">
               <span>Recent logs</span>
-              <span className="text-white">{logs.length}</span>
+              <span className="text-gray-900">{logs.length}</span>
             </li>
             <li className="flex justify-between">
               <span>Weakest TIMSS domain</span>
-              <span className="text-white">{weakDomain}</span>
+              <span className="text-gray-900">{weakDomain}</span>
             </li>
             <li className="flex justify-between">
               <span>Available templates</span>
-              <span className="text-white">{feedbackTemplates.length}</span>
+              <span className="text-gray-900">{feedbackTemplates.length}</span>
             </li>
             {latestLog?.self_reported_grade && (
               <li className="flex justify-between">
                 <span>Latest self‑grade</span>
-                <span className="text-white">{latestLog.self_reported_grade}</span>
+                <span className="text-gray-900">{latestLog.self_reported_grade}</span>
               </li>
             )}
           </ul>
         </div>
         <div className="space-y-3">
-          <h4 className="text-lg font-bold text-white uppercase tracking-tight">Feedback Logic</h4>
-          <p className="text-zinc-400 text-sm">
+          <h4 className="text-lg font-bold text-gray-900 uppercase tracking-tight">Feedback Logic</h4>
+          <p className="text-gray-600 text-sm">
             This engine combines <strong>self‑reported data</strong> (grades, confidence, load) with <strong>template‑based advice</strong> to deliver feedback that adapts to your current learning state. It prioritises the domain where you have the least practice ({weakDomain}).
           </p>
           <p className="text-xs font-mono opacity-60 mt-4">

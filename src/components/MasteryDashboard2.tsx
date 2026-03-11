@@ -98,13 +98,13 @@ const MasteryDashboard2: React.FC<MasteryDashboard2Props> = ({
   }, [points, trendLines, showForecast]);
 
   return (
-    <div className="border border-[#D4AF37]/30 bg-black/40 p-8">
+    <div className="bg-white rounded-2xl shadow-sm p-8 border border-gray-100">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
         <div>
-          <h3 className="text-2xl font-black uppercase tracking-tight text-white mb-2">
+          <h3 className="text-2xl font-black uppercase tracking-tight text-gray-900 mb-2">
             Mastery Dashboard 2.0
           </h3>
-          <p className="text-zinc-400 text-sm font-mono uppercase tracking-widest">
+          <p className="text-gray-600 text-sm font-mono uppercase tracking-widest">
             TIMSS Cognitive Domains – Historical Progress & Forecast
           </p>
         </div>
@@ -259,8 +259,8 @@ const MasteryDashboard2: React.FC<MasteryDashboard2Props> = ({
               className="w-4 h-4 rounded-full"
               style={{ backgroundColor: domainColors[domain] }}
             />
-            <span className="text-white font-bold uppercase tracking-tight">{domain}</span>
-            <span className="text-zinc-400 text-sm">
+            <span className="text-gray-900 font-bold uppercase tracking-tight">{domain}</span>
+            <span className="text-gray-600 text-sm">
               {points.length > 0 && `${points[points.length - 1][domain]}%`}
               {trendLines[domain] && (
                 <span className="ml-2">
@@ -279,19 +279,19 @@ const MasteryDashboard2: React.FC<MasteryDashboard2Props> = ({
           const trend = trendLines[domain];
           const forecast = forecastPoints.length > 0 ? forecastPoints[0][domain] : null;
           return (
-            <div key={domain} className="border border-zinc-800 p-6">
-              <h4 className="text-lg font-black uppercase tracking-tight text-white mb-4">
+            <div key={domain} className="border border-gray-100 p-6">
+              <h4 className="text-lg font-black uppercase tracking-tight text-gray-900 mb-4">
                 {domain}
               </h4>
-              <div className="text-4xl font-black text-white mb-2">{current}%</div>
-              <div className="text-sm text-zinc-400 mb-4">
+              <div className="text-4xl font-black text-gray-900 mb-2">{current}%</div>
+              <div className="text-sm text-gray-600 mb-4">
                 Current mastery
               </div>
               {trend && (
                 <div className="text-sm">
                   <div className="flex justify-between mb-1">
                     <span className="text-zinc-500">Trend slope:</span>
-                    <span className={trend.slope > 0 ? 'text-emerald-400' : trend.slope < 0 ? 'text-rose-400' : 'text-zinc-400'}>
+                    <span className={trend.slope > 0 ? 'text-emerald-400' : trend.slope < 0 ? 'text-rose-400' : 'text-gray-600'}>
                       {trend.slope > 0 ? '+' : ''}{trend.slope.toFixed(2)} pts/day
                     </span>
                   </div>
@@ -309,11 +309,11 @@ const MasteryDashboard2: React.FC<MasteryDashboard2Props> = ({
       </div>
 
       {/* Interpretation */}
-      <div className="mt-12 pt-8 border-t border-zinc-800">
-        <h4 className="text-lg font-black uppercase tracking-tight text-white mb-4">
+      <div className="mt-12 pt-8 border-t border-gray-100">
+        <h4 className="text-lg font-black uppercase tracking-tight text-gray-900 mb-4">
           Insights & Recommendations
         </h4>
-        <ul className="space-y-3 text-zinc-400 text-sm">
+        <ul className="space-y-3 text-gray-600 text-sm">
           <li className="flex items-start gap-3">
             <span className="text-[#D4AF37] font-black">✓</span>
             <span>

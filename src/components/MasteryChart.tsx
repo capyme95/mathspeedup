@@ -26,13 +26,13 @@ const MasteryChart: React.FC<MasteryChartProps> = ({
 
 
   return (
-    <div className="border border-[#D4AF37]/30 bg-black/40 p-8">
+    <div className="bg-white rounded-2xl shadow-sm p-8 border border-gray-100">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
         <div>
-          <h3 className="text-2xl font-black uppercase tracking-tight text-white mb-2">
+          <h3 className="text-2xl font-black uppercase tracking-tight text-gray-900 mb-2">
             Mastery Dashboard
           </h3>
-          <p className="text-zinc-400 text-sm font-mono uppercase tracking-widest">
+          <p className="text-gray-600 text-sm font-mono uppercase tracking-widest">
             TIMSS Cognitive Domains – Progress over last 30 days
           </p>
         </div>
@@ -52,12 +52,12 @@ const MasteryChart: React.FC<MasteryChartProps> = ({
                     className="w-4 h-4 rounded-full"
                     style={{ backgroundColor: domainColors[domain.domain] }}
                   />
-                  <span className="text-xl font-black text-white uppercase tracking-tight">
+                  <span className="text-xl font-black text-gray-900 uppercase tracking-tight">
                     {domain.domain}
                   </span>
                 </div>
                 <div className="text-right">
-                  <span className="text-3xl font-black text-white">{domain.score}%</span>
+                  <span className="text-3xl font-black text-gray-900">{domain.score}%</span>
                   <span className="text-xs font-mono text-zinc-500 ml-4 uppercase tracking-widest">
                     {domain.trend === 'up' && '↗ TRENDING UP'}
                     {domain.trend === 'down' && '↘ TRENDING DOWN'}
@@ -84,11 +84,11 @@ const MasteryChart: React.FC<MasteryChartProps> = ({
         })}
       </div>
 
-      <div className="mt-12 pt-8 border-t border-zinc-800">
-        <h4 className="text-lg font-black uppercase tracking-tight text-white mb-4">
+      <div className="mt-12 pt-8 border-t border-gray-100">
+        <h4 className="text-lg font-black uppercase tracking-tight text-gray-900 mb-4">
           Interpretation
         </h4>
-        <ul className="space-y-3 text-zinc-400 text-sm">
+        <ul className="space-y-3 text-gray-600 text-sm">
           <li className="flex items-start gap-3">
             <span className="text-[#D4AF37] font-black">✓</span>
             <span>
