@@ -52,12 +52,6 @@ jobs:
       #     uploadArtifacts: true
       #     temporaryPublicStorage: true
 
-      # Deploy to Vercel (if secrets are configured)
-      - name: Deploy to Vercel
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod'
+      # Vercel Deployment is handled natively by Vercel's GitHub integration.
+      # Do NOT add a custom Deploy to Vercel step here, as it requires secrets
+      # and creates duplicate deployment pipelines.
