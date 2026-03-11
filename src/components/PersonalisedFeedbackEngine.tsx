@@ -133,7 +133,7 @@ const PersonalisedFeedbackEngine: React.FC<PersonalisedFeedbackEngineProps> = ({
 
     // Add a relevant template‑based feedback if available
     if (relevantTemplates.length > 0) {
-      const template = relevantTemplates[Math.floor(Math.random() * relevantTemplates.length)];
+      const template = relevantTemplates[0]; // Use first template instead of random
       messages.push({
         type: template.feedback_type,
         text: template.template_en.replace(/{.*?}/g, (match) => {

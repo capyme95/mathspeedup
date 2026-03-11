@@ -14,7 +14,6 @@ const RetrievalPractice = React.lazy(() => import('@/components/RetrievalPractic
 const MasteryDashboard2 = React.lazy(() => import('@/components/MasteryDashboard2'));
 const CognitiveLoadOptimiser = React.lazy(() => import('@/components/CognitiveLoadOptimiser'));
 const PersonalisedFeedbackEngine = React.lazy(() => import('@/components/PersonalisedFeedbackEngine'));
-import ErrorBoundary from '@/components/ErrorBoundary';
 import FeedbackForm from '@/components/FeedbackForm';
 
 interface Standard { id: string; code: string; title: string; credits: number; }
@@ -27,10 +26,10 @@ interface LearningLog {
 }
 
 export default function Dashboard() {
-  const [standards, setStandards] = useState<Standard[]>([]);
+  const [standards, setStandards] = useState<Standard[]>([]); // eslint-disable-line @typescript-eslint/no-unused-vars
   const [logs, setLogs] = useState<LearningLog[]>([]);
   const [workedExamples, setWorkedExamples] = useState<WorkedExampleType[]>([]);
-  const [feedbackTemplates, setFeedbackTemplates] = useState<any[]>([]);
+  const [feedbackTemplates, setFeedbackTemplates] = useState<unknown[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [answer, setAnswer] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -238,7 +237,7 @@ Step 5: Assumptions: n is integer, odd integers are positive.`,
       });
       if (res.ok) { setSubmitStatus('SUCCESS: LOGIC SEALED'); setAnswer(''); fetchData(); }
       else { throw new Error('FAIL'); }
-    } catch (err) { setSubmitStatus('ERROR: CONNECTION COLLAPSE'); } finally { setIsSubmitting(false); setTimeout(() => setSubmitStatus(null), 5000); }
+    } catch (_err) { setSubmitStatus('ERROR: CONNECTION COLLAPSE'); } finally { setIsSubmitting(false); setTimeout(() => setSubmitStatus(null), 5000); }
   };
 
   useEffect(() => { fetchData(); const interval = setInterval(fetchData, 15000); return () => clearInterval(interval); }, [fetchData]);

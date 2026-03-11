@@ -1,0 +1,16 @@
+# Ignore temporary scripts
+audit_*.js
+check_*.js
+test_*.js
+fetch_project.js
+simple_test.js
+# Ignore configuration files
+next.config.*
+# Ignore node_modules
+node_modules/
+# Ignore build output
+.next/
+out/
+dist/
+# Ignore migration scripts
+supabase/migrations/*.sql

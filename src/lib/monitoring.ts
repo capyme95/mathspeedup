@@ -6,7 +6,7 @@
 interface LogEventParams {
   event_type: 'error' | 'performance' | 'analytics' | 'feedback';
   event_name: string;
-  payload?: Record<string, any>;
+  payload?: Record<string, unknown>;
   user_id?: string;
 }
 
@@ -66,7 +66,7 @@ export function logError(error: Error, componentStack?: string, user_id?: string
 /**
  * Log a performance metric (LCP, FID, custom timing)
  */
-export function logPerformance(metricName: string, value: number, metadata?: Record<string, any>, user_id?: string) {
+export function logPerformance(metricName: string, value: number, metadata?: Record<string, unknown>, user_id?: string) {
   return logEvent({
     event_type: 'performance',
     event_name: metricName,
@@ -82,7 +82,7 @@ export function logPerformance(metricName: string, value: number, metadata?: Rec
 /**
  * Log an analytics event (button click, page view, etc.)
  */
-export function logAnalytics(eventName: string, properties?: Record<string, any>, user_id?: string) {
+export function logAnalytics(eventName: string, properties?: Record<string, unknown>, user_id?: string) {
   return logEvent({
     event_type: 'analytics',
     event_name: eventName,

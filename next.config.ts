@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
 
 // Conditionally apply bundle analyzer
 const withBundleAnalyzer = process.env.ANALYZE === 'true'
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   ? require('@next/bundle-analyzer')({ enabled: true })
   : (config: NextConfig) => config;
 
