@@ -243,68 +243,90 @@ Step 5: Assumptions: n is integer, odd integers are positive.`,
 
   useEffect(() => { fetchData(); const interval = setInterval(fetchData, 15000); return () => clearInterval(interval); }, [fetchData]);
 
-  if (loading) return <div className="min-h-screen bg-[#0D0D0D] text-[#D4AF37] flex items-center justify-center font-mono uppercase tracking-[0.2em]">Synchronizing_Narrative_Core...</div>;
+  if (loading) return <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white text-blue-600 flex items-center justify-center font-sans">Loading MathSpeedup 2.0...</div>;
 
   const examplesToShow = workedExamples.length > 0 ? workedExamples : staticWorkedExamples;
 
   return (
-    <div className="min-h-screen bg-[#0D0D0D] text-zinc-300 p-4 md:p-12 font-sans selection:bg-[#D4AF37] selection:text-black">
-      <header className="max-w-5xl mx-auto mb-20 flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-[#D4AF37]/30 pb-12">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white text-gray-800 p-4 md:p-12 font-sans selection:bg-blue-100 selection:text-blue-900">
+      <header className="max-w-6xl mx-auto mb-24 flex flex-col md:flex-row justify-between items-start md:items-center gap-8 pb-8 border-b border-gray-200">
         <div>
-          <h1 className="text-6xl font-black tracking-tighter uppercase italic text-white leading-none">MathSpeedup <span className="text-[#D4AF37]">2.0</span></h1>
-          <p className="text-xs font-mono mt-4 tracking-[0.3em] opacity-40 uppercase">Avondale Sunday Market // NCEA AS91945 // Auckland 2026</p>
+          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 leading-tight">
+            MathSpeedup <span className="text-blue-600">2.0</span>
+          </h1>
+          <p className="text-lg text-gray-600 mt-4 max-w-2xl">
+            Evidence‑based learning platform for NCEA Mathematics • Avondale Sunday Market Project • Auckland 2026
+          </p>
         </div>
-        <div className="flex flex-col items-end gap-3">
-          <div className="flex items-center gap-2">
-             <span className="text-[10px] font-mono text-[#D4AF37] opacity-60 uppercase tracking-widest">Logic_Link: Verified</span>
-             <div className="w-3 h-3 bg-[#D4AF37] shadow-[0_0_15px_#D4AF37] rounded-full animate-pulse"></div>
+        <div className="flex flex-col items-start md:items-end gap-4">
+          <div className="flex items-center gap-3 bg-blue-50 px-4 py-3 rounded-2xl">
+            <div className="w-4 h-4 bg-blue-500 rounded-full animate-pulse"></div>
+            <span className="text-sm font-medium text-blue-700">Live • Connected to Learning Dashboard</span>
           </div>
-          <span className="text-[10px] font-mono text-[#D4AF37] border border-[#D4AF37]/40 px-3 py-1 uppercase tracking-tighter">Gen 26 Shadow Infrastructure</span>
+          <div className="text-sm text-gray-500 bg-gray-100 px-4 py-2 rounded-xl">
+            Generation 26 • Updated today
+          </div>
         </div>
       </header>
 
       <main className="max-w-5xl mx-auto space-y-32">
-        {/* Dynamic Environment Sidebar/Widget */}
-        <section className="bg-zinc-900/50 border border-[#D4AF37]/20 p-6 font-mono text-xs uppercase tracking-widest flex flex-wrap gap-10 justify-around">
-           <div className="flex flex-col gap-1">
-              <span className="opacity-40">Rain_Probability</span>
-              <span className="text-white text-lg font-black">{envFactors.rainProb}%</span>
-           </div>
-           <div className="flex flex-col gap-1">
-              <span className="opacity-40">Market_Discount_Rate (d)</span>
-              <span className="text-[#D4AF37] text-lg font-black">{envFactors.discountRate}x</span>
-           </div>
-           <div className="flex flex-col gap-1">
-              <span className="opacity-40">Fuel_Price_Index</span>
-              <span className="text-white text-lg font-black">{envFactors.fuelIndex}</span>
-           </div>
-           <div className="flex flex-col gap-1">
-              <span className="opacity-40">Observation_Status</span>
-              <span className="text-emerald-500 text-lg font-black">ACTIVE</span>
-           </div>
+        {/* Dynamic Environment Factors */}
+        <section className="max-w-6xl mx-auto mb-16">
+          <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
+            <h3 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-3">
+              <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+              Real‑World Context Factors
+            </h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              <div className="bg-blue-50 p-6 rounded-xl">
+                <div className="text-sm text-blue-700 font-medium mb-2">Rain Probability</div>
+                <div className="text-3xl font-bold text-gray-900">{envFactors.rainProb}%</div>
+              </div>
+              <div className="bg-purple-50 p-6 rounded-xl">
+                <div className="text-sm text-purple-700 font-medium mb-2">Market Discount Rate (d)</div>
+                <div className="text-3xl font-bold text-gray-900">{envFactors.discountRate}×</div>
+              </div>
+              <div className="bg-amber-50 p-6 rounded-xl">
+                <div className="text-sm text-amber-700 font-medium mb-2">Fuel Price Index</div>
+                <div className="text-3xl font-bold text-gray-900">{envFactors.fuelIndex}</div>
+              </div>
+              <div className="bg-emerald-50 p-6 rounded-xl">
+                <div className="text-sm text-emerald-700 font-medium mb-2">System Status</div>
+                <div className="text-3xl font-bold text-emerald-600">Active</div>
+              </div>
+            </div>
+          </div>
         </section>
 
         {/* Phase 1: Evidence‑Based Learning Components */}
-        <section className="border border-[#D4AF37]/30 p-8 md:p-12 bg-[#0a0a0a]">
-          <h2 className="text-4xl font-black uppercase tracking-tight text-white mb-2">
-            MathSpeedup <span className="text-[#D4AF37]">2.0</span> – Evidence‑Based Learning
-          </h2>
-          <p className="text-zinc-400 text-lg mb-10 font-mono uppercase tracking-widest">
-            Integrating Visible Learning, Cognitive Load Theory, and Self‑Reported Grades.
-          </p>
+        <section className="max-w-6xl mx-auto mb-24">
+          <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 border border-gray-100">
+            <div className="mb-12">
+              <h2 className="text-4xl font-bold text-gray-900 mb-4">
+                Evidence‑Based Learning <span className="text-blue-600">Framework</span>
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl">
+                Integrating Visible Learning, Cognitive Load Theory, and Self‑Reported Grades for optimal learning outcomes.
+              </p>
+            </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-16">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
             <div className="lg:col-span-2 space-y-10">
-              <LearningIntention
-                intention={learningIntention.intention}
-                successCriteria={learningIntention.successCriteria}
-                timssDomain={learningIntention.timssDomain}
-              />
-              <div>
-                <h3 className="text-2xl font-black uppercase tracking-tight text-white mb-6">
+              <div className="bg-blue-50 rounded-2xl p-8 border border-blue-100">
+                <LearningIntention
+                  intention={learningIntention.intention}
+                  successCriteria={learningIntention.successCriteria}
+                  timssDomain={learningIntention.timssDomain}
+                />
+              </div>
+              <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
+                <h3 className="text-2xl font-semibold text-gray-900 mb-4 flex items-center gap-3">
+                  <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                    <span className="text-purple-600 font-bold">📚</span>
+                  </div>
                   Worked Examples Library
                 </h3>
-                <p className="text-zinc-400 mb-6 text-sm font-mono uppercase tracking-widest">
+                <p className="text-gray-600 mb-6 text-lg">
                   Cognitive Load Theory – Faded guidance to reduce extraneous load.
                 </p>
                 <div className="space-y-6">
@@ -321,162 +343,189 @@ Step 5: Assumptions: n is integer, odd integers are positive.`,
                 </div>
               </div>
             </div>
-            <div>
-              <SelfReportedGrade
-                onGradeSubmit={handleGradeSubmit}
-              />
-              <div className="mt-12 p-6 border border-zinc-800 bg-black/40">
-                <h4 className="text-xl font-black uppercase tracking-tight text-white mb-4">
+            <div className="space-y-10">
+              <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
+                <SelfReportedGrade
+                  onGradeSubmit={handleGradeSubmit}
+                />
+              </div>
+              <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-8 border border-emerald-100">
+                <h4 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-3">
+                  <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
+                    <span className="text-emerald-600 font-bold">✓</span>
+                  </div>
                   Why This Works
                 </h4>
-                <ul className="space-y-4 text-sm text-zinc-400">
-                  <li className="flex items-start gap-3">
-                    <span className="text-[#D4AF37] font-black">✓</span>
-                    <span><strong>Visible Learning</strong> (Hattie): Learning intentions & success criteria increase effect size d=0.56.</span>
+                <ul className="space-y-4">
+                  <li className="flex items-start gap-4">
+                    <span className="w-6 h-6 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-1">✓</span>
+                    <span className="text-gray-700"><strong className="text-gray-900">Visible Learning</strong> (Hattie): Learning intentions & success criteria increase effect size d=0.56.</span>
                   </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-[#D4AF37] font-black">✓</span>
-                    <span><strong>Self‑Reported Grades</strong> (Hattie d=1.33): Predictions boost metacognition and accuracy.</span>
+                  <li className="flex items-start gap-4">
+                    <span className="w-6 h-6 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-1">✓</span>
+                    <span className="text-gray-700"><strong className="text-gray-900">Self‑Reported Grades</strong> (Hattie d=1.33): Predictions boost metacognition and accuracy.</span>
                   </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-[#D4AF37] font-black">✓</span>
-                    <span><strong>Cognitive Load Theory</strong>: Worked examples reduce working‑memory overload.</span>
+                  <li className="flex items-start gap-4">
+                    <span className="w-6 h-6 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-1">✓</span>
+                    <span className="text-gray-700"><strong className="text-gray-900">Cognitive Load Theory</strong>: Worked examples reduce working‑memory overload.</span>
                   </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-[#D4AF37] font-black">✓</span>
-                    <span><strong>TIMSS Cognitive Domains</strong>: Knowing, Applying, Reasoning for balanced assessment.</span>
+                  <li className="flex items-start gap-4">
+                    <span className="w-6 h-6 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-1">✓</span>
+                    <span className="text-gray-700"><strong className="text-gray-900">TIMSS Cognitive Domains</strong>: Knowing, Applying, Reasoning for balanced assessment.</span>
                   </li>
                 </ul>
               </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
         {/* Phase 2: Structured Feedback & Mastery */}
-        <section className="border border-[#D4AF37]/30 p-8 md:p-12 bg-[#0a0a0a]">
-          <h2 className="text-4xl font-black uppercase tracking-tight text-white mb-2">
-            Phase 2 – Feedback & Mastery
-          </h2>
-          <p className="text-zinc-400 text-lg mb-10 font-mono uppercase tracking-widest">
-            Structured feedback templates and mastery tracking across TIMSS cognitive domains.
-          </p>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-            <div>
-              <StructuredFeedback
-                feedbackItems={feedbackItems}
-                standardCode="AS91945"
-              />
+        <section className="max-w-6xl mx-auto mb-24">
+          <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 border border-gray-100">
+            <div className="mb-12">
+              <h2 className="text-4xl font-bold text-gray-900 mb-4">
+                Feedback & <span className="text-purple-600">Mastery Tracking</span>
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl">
+                Structured feedback templates and mastery tracking across TIMSS cognitive domains.
+              </p>
             </div>
-            <div>
-              <MasteryChart
-                domains={masteryData}
-                studentName="Sebastian"
-              />
-            </div>
-          </div>
 
-          <div className="p-6 border border-zinc-800 bg-black/40">
-            <h4 className="text-xl font-black uppercase tracking-tight text-white mb-4">
-              Integration Notes
-            </h4>
-            <ul className="space-y-3 text-sm text-zinc-400">
-              <li className="flex items-start gap-3">
-                <span className="text-[#D4AF37] font-black">✓</span>
-                <span><strong>Structured Feedback</strong> uses Hattie’s three feedback types (task, process, self‑regulation) to increase effect size d=0.70–0.79.</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-[#D4AF37] font-black">✓</span>
-                <span><strong>Mastery Charts</strong> track progress across TIMSS cognitive domains, enabling targeted intervention.</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-[#D4AF37] font-black">✓</span>
-                <span><strong>Next Step</strong>: Connect to Supabase tables (<code>feedback_templates</code>, <code>learning_logs</code>) for dynamic data.</span>
-              </li>
-            </ul>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-16">
+              <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-8 border border-purple-100">
+                <StructuredFeedback
+                  feedbackItems={feedbackItems}
+                  standardCode="AS91945"
+                />
+              </div>
+              <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-8 border border-blue-100">
+                <MasteryChart
+                  domains={masteryData}
+                  studentName="Sebastian"
+                />
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-8 border border-amber-100">
+              <h4 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-3">
+                <div className="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center">
+                  <span className="text-amber-600 font-bold">📈</span>
+                </div>
+                Integration Notes
+              </h4>
+              <ul className="space-y-4">
+                <li className="flex items-start gap-4">
+                  <span className="w-6 h-6 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-1">✓</span>
+                  <span className="text-gray-700"><strong className="text-gray-900">Structured Feedback</strong> uses Hattie’s three feedback types (task, process, self‑regulation) to increase effect size d=0.70–0.79.</span>
+                </li>
+                <li className="flex items-start gap-4">
+                  <span className="w-6 h-6 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-1">✓</span>
+                  <span className="text-gray-700"><strong className="text-gray-900">Mastery Charts</strong> track progress across TIMSS cognitive domains, enabling targeted intervention.</span>
+                </li>
+                <li className="flex items-start gap-4">
+                  <span className="w-6 h-6 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-1">✓</span>
+                  <span className="text-gray-700"><strong className="text-gray-900">Next Step</strong>: Connect to Supabase tables (<code className="bg-amber-100 px-1 rounded">feedback_templates</code>, <code className="bg-amber-100 px-1 rounded">learning_logs</code>) for dynamic data.</span>
+                </li>
+              </ul>
+            </div>
           </div>
         </section>
 
         {/* Phase 3: Adaptive Learning Paths */}
-        <section className="border border-[#D4AF37]/40 p-8 md:p-12 bg-[#0a0a0a]">
-          <h2 className="text-4xl font-black uppercase tracking-tight text-white mb-2">
-            Phase 3 – Adaptive Learning Paths
-          </h2>
-          <p className="text-zinc-400 text-lg mb-10 font-mono uppercase tracking-widest">
-            Real‑time task sequencing based on cognitive load, performance history, and spaced repetition.
-          </p>
+        <section className="max-w-6xl mx-auto mb-24">
+          <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 border border-gray-100">
+            <div className="mb-12">
+              <h2 className="text-4xl font-bold text-gray-900 mb-4">
+                Adaptive <span className="text-teal-600">Learning Paths</span>
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl">
+                Real‑time task sequencing based on cognitive load, performance history, and spaced repetition.
+              </p>
+            </div>
 
-          <div className="mb-16">
-            <Suspense fallback={
-              <div className="border border-[#D4AF37]/20 p-8 text-center text-zinc-400 animate-pulse">
-                Loading adaptive paths…
-              </div>
-            }>
-              <AdaptivePathRecommender
-                logs={logs}
-                currentStandard="AS91945"
-              />
-            </Suspense>
-          </div>
+            <div className="mb-16">
+              <Suspense fallback={
+                <div className="border border-teal-200 bg-teal-50 p-12 text-center text-teal-600 rounded-2xl animate-pulse">
+                  Loading adaptive paths…
+                </div>
+              }>
+                <AdaptivePathRecommender
+                  logs={logs}
+                  currentStandard="AS91945"
+                />
+              </Suspense>
+            </div>
 
-          <div className="p-6 border border-zinc-800 bg-black/40">
-            <h4 className="text-xl font-black uppercase tracking-tight text-white mb-4">
-              How Adaptive Paths Work
-            </h4>
-            <ul className="space-y-3 text-sm text-zinc-400">
-              <li className="flex items-start gap-3">
-                <span className="text-[#D4AF37] font-black">✓</span>
-                <span><strong>Rule‑Based Engine</strong>: Analyses your recent learning logs to identify the weakest TIMSS cognitive domain and recommends targeted practice.</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-[#D4AF37] font-black">✓</span>
-                <span><strong>Difficulty Calibration</strong>: Adjusts task difficulty (Achieved/Merit/Excellence) based on your prediction‑accuracy history.</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-[#D4AF37] font-black">✓</span>
-                <span><strong>Future Upgrades</strong>: Will incorporate Bayesian knowledge tracing, spaced‑repetition scheduling, and personalised feedback generation.</span>
-              </li>
-            </ul>
+            <div className="bg-gradient-to-br from-teal-50 to-emerald-50 rounded-2xl p-8 border border-teal-100">
+              <h4 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-3">
+                <div className="w-8 h-8 bg-teal-100 rounded-lg flex items-center justify-center">
+                  <span className="text-teal-600 font-bold">⚙️</span>
+                </div>
+                How Adaptive Paths Work
+              </h4>
+              <ul className="space-y-4">
+                <li className="flex items-start gap-4">
+                  <span className="w-6 h-6 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-1">✓</span>
+                  <span className="text-gray-700"><strong className="text-gray-900">Rule‑Based Engine</strong>: Analyses your recent learning logs to identify the weakest TIMSS cognitive domain and recommends targeted practice.</span>
+                </li>
+                <li className="flex items-start gap-4">
+                  <span className="w-6 h-6 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-1">✓</span>
+                  <span className="text-gray-700"><strong className="text-gray-900">Difficulty Calibration</strong>: Adjusts task difficulty (Achieved/Merit/Excellence) based on your prediction‑accuracy history.</span>
+                </li>
+                <li className="flex items-start gap-4">
+                  <span className="w-6 h-6 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-1">✓</span>
+                  <span className="text-gray-700"><strong className="text-gray-900">Future Upgrades</strong>: Will incorporate Bayesian knowledge tracing, spaced‑repetition scheduling, and personalised feedback generation.</span>
+                </li>
+              </ul>
+            </div>
           </div>
         </section>
 
         {/* Phase 3: Retrieval Practice */}
-        <section className="border border-[#D4AF37]/30 p-8 md:p-12 bg-[#0a0a0a]">
-          <h2 className="text-4xl font-black uppercase tracking-tight text-white mb-2">
-            Phase 3 – Retrieval Practice (Testing Effect)
-          </h2>
-          <p className="text-zinc-400 text-lg mb-10 font-mono uppercase tracking-widest">
-            Active recall quizzes to strengthen long‑term retention and calibrate confidence.
-          </p>
+        <section className="max-w-6xl mx-auto mb-24">
+          <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 border border-gray-100">
+            <div className="mb-12">
+              <h2 className="text-4xl font-bold text-gray-900 mb-4">
+                Retrieval <span className="text-indigo-600">Practice</span> (Testing Effect)
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl">
+                Active recall quizzes to strengthen long‑term retention and calibrate confidence.
+              </p>
+            </div>
 
-          <div className="mb-16">
-            <Suspense fallback={
-              <div className="border border-[#D4AF37]/20 p-8 text-center text-zinc-400 animate-pulse">
-                Loading retrieval practice…
-              </div>
-            }>
-              <RetrievalPractice />
-            </Suspense>
-          </div>
+            <div className="mb-16">
+              <Suspense fallback={
+                <div className="border border-indigo-200 bg-indigo-50 p-12 text-center text-indigo-600 rounded-2xl animate-pulse">
+                  Loading retrieval practice…
+                </div>
+              }>
+                <RetrievalPractice />
+              </Suspense>
+            </div>
 
-          <div className="p-6 border border-zinc-800 bg-black/40">
-            <h4 className="text-xl font-black uppercase tracking-tight text-white mb-4">
-              How Retrieval Practice Works
-            </h4>
-            <ul className="space-y-3 text-sm text-zinc-400">
-              <li className="flex items-start gap-3">
-                <span className="text-[#D4AF37] font-black">✓</span>
-                <span><strong>Testing Effect</strong>: Actively retrieving information from memory strengthens neural pathways more than passive review (Roediger & Karpicke, 2006).</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-[#D4AF37] font-black">✓</span>
-                <span><strong>Confidence Calibration</strong>: Rating your certainty before feedback helps align self‑assessment with actual knowledge (metacognitive accuracy).</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-[#D4AF37] font-black">✓</span>
-                <span><strong>Spaced Repetition</strong>: This module will later schedule reviews based on a forgetting curve (Ebbinghaus, 1885) to maximise retention.</span>
-              </li>
-            </ul>
+            <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl p-8 border border-indigo-100">
+              <h4 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-3">
+                <div className="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center">
+                  <span className="text-indigo-600 font-bold">🧠</span>
+                </div>
+                How Retrieval Practice Works
+              </h4>
+              <ul className="space-y-4">
+                <li className="flex items-start gap-4">
+                  <span className="w-6 h-6 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-1">✓</span>
+                  <span className="text-gray-700"><strong className="text-gray-900">Testing Effect</strong>: Actively retrieving information from memory strengthens neural pathways more than passive review (Roediger & Karpicke, 2006).</span>
+                </li>
+                <li className="flex items-start gap-4">
+                  <span className="w-6 h-6 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-1">✓</span>
+                  <span className="text-gray-700"><strong className="text-gray-900">Confidence Calibration</strong>: Rating your certainty before feedback helps align self‑assessment with actual knowledge (metacognitive accuracy).</span>
+                </li>
+                <li className="flex items-start gap-4">
+                  <span className="w-6 h-6 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 mt-1">✓</span>
+                  <span className="text-gray-700"><strong className="text-gray-900">Spaced Repetition</strong>: This module will later schedule reviews based on a forgetting curve (Ebbinghaus, 1885) to maximise retention.</span>
+                </li>
+              </ul>
+            </div>
           </div>
         </section>
 
