@@ -297,6 +297,146 @@ Step 5: Assumptions: n is integer, odd integers are positive.`,
           </div>
         </section>
 
+<section className="border  p-8 md:p-20 relative bg-white rounded-2xl shadow-xl border border-blue-100 shadow-lg">
+          <div className="absolute -top-5 left-10 bg-blue-600 rounded-full border-2 border-blue-500 px-8 py-1.5 font-black uppercase text-sm tracking-[0.3em] text-white">Internal Assessment Project</div>
+          
+          <div className="space-y-20 mb-24">
+            <div className="prose  max-w-none">
+              <h2 className="text-4xl font-black text-gray-900 uppercase mb-8 tracking-tight">Project: Sunday Market Expansion</h2>
+              <p className="text-xl leading-relaxed text-gray-600 italic font-light border-l-4 border-blue-500/40 pl-10 mb-16">
+                &quot;Sebastian has been appointed as a Logic Consultant for the Avondale Sunday Market organisers. To accommodate a growing number of vendors, he must design a scalable spatial model and predict the financial impact of weather-related attendance fluctuations.&quot;
+              </p>
+
+              <div className="space-y-16">
+                <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-10 border-l-2 border-blue-500">
+                  <h3 className="text-2xl font-black text-blue-500 uppercase mb-6 tracking-wide">[ Phase 1: Spatial Geometry - Achieved ]</h3>
+                  <p className="text-lg text-gray-700 leading-relaxed">
+                    The layout consists of two primary unit types. A <b>Small Artisan Stall</b> requires <i>s</i> square metres of ground space. A <b>Large Food Truck Module</b> is more demanding, requiring 5 square metres more than twice the space of the Artisan Stall. 
+                    <br/><br/>
+                    <strong>Task:</strong> Formulate and simplify an algebraic expression for the total combined area required for one of each stall type. This simplified model will be used by organizers to calculate site-wide permit fees.
+                  </p>
+                </div>
+
+                <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-10 border-l-2 border-blue-500">
+                  <h3 className="text-2xl font-black text-blue-500 uppercase mb-6 tracking-wide">[ Phase 2: Revenue Thresholds - Merit ]</h3>
+                  <p className="text-lg text-gray-700 leading-relaxed">
+                    Based on the footprint established in Phase 1, the market&apos;s total weekly revenue (<i>R</i>), measured in dollars, is expected to decrease as the number of consecutive rainy weekends (<i>w</i>) increases. The organisers provide the following dynamic linear model:
+                    <br/><br/>
+                    <span className="text-4xl font-bold text-gray-900 block py-6 underline decoration-blue-200 tracking-widest text-center italic font-mono">R = 850 - (75 * w)</span>
+                    <br/>
+                    <strong>Dynamic Constraint:</strong> Due to current conditions, a market discount factor <i>d</i> of <b>{envFactors.discountRate}</b> applies to the required minimum revenue. 
+                    <br/><br/>
+                    If the organisers require a minimum revenue of <b>${(400 * parseFloat(envFactors.discountRate)).toFixed(0)}</b> (calculated as $400 * <i>d</i>) to cover costs, calculate the maximum number of rainy weekends the market can sustain. Justify your answer using an equation.
+                  </p>
+                </div>
+
+                <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-10 border-l-2 border-blue-500">
+                  <h3 className="text-2xl font-black text-blue-500 uppercase mb-6 tracking-wide">[ Phase 3: Patterns & Generalisation - Excellence ]</h3>
+                  <p className="text-lg text-gray-700 leading-relaxed">
+                    To optimize the concentric layout of stalls around the central hub, Sebastian notices that vendor growth follows a pattern of consecutive odd integers. He needs to verify a core scaling rule for the expansion rings.
+                    <br/><br/>
+                    <strong>Task:</strong> Algebraically prove that the difference between the squares of any two consecutive positive odd integers is always a multiple of 8.
+                    <br/><br/>
+                    <strong>Reflection:</strong> Explicitly state the assumptions you made for this algebraic model. Given the current <b>{envFactors.rainProb}% Rain Probability</b>, discuss one real-world limitation of using this discrete model to predict physical vendor growth in the dynamic Avondale Market environment.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <form onSubmit={handleSubmit} className="border-t border-transparent pt-20">
+            <h4 className="font-black uppercase text-xs tracking-[0.5em] mb-8 text-blue-500/60 text-center italic">Write Your Answer Transmit Logic Fingerprints for Expert Audit Steps Below</h4>
+            <textarea 
+              className="w-full bg-blue-50 rounded-2xl border-2 border-blue-200 p-10 text-gray-900 text-2xl font-mono min-h-[450px] outline-none focus:border-blue-500 transition-all placeholder:opacity-10"
+              placeholder="Structure your proof and working here (e.g., Step 1, Step 2...)"
+              value={answer}
+              onChange={(e) => setAnswer(e.target.value)}
+            />
+            <div className="flex flex-col md:flex-row justify-between items-center mt-12 gap-10">
+              <span className="text-[10px] font-mono opacity-30 uppercase tracking-[0.3em]">ID: AVONDALE_DYNAMIC_V3</span>
+              <button type="submit" className="w-full md:w-auto bg-blue-600 text-white px-12 py-4 rounded-xl font-bold text-xl hover:bg-blue-700 hover:shadow-lg transition-all active:scale-95 border-none">
+                {isSubmitting ? 'Submitting...' : 'Submit Answer'}
+              </button>
+            </div>
+            {submitStatus && <div className="mt-10 bg-white text-black p-5 text-center font-black uppercase tracking-widest text-lg rounded-xl border-2 border-blue-500">{submitStatus}</div>}
+          </form>
+        </section>
+
+        <section className="space-y-16 pb-48">
+          <h2 className="text-4xl font-black uppercase tracking-tighter italic text-gray-900 flex items-center gap-6">
+            Recent Submissions
+            <span className="h-px flex-1 bg-gradient-to-r from-blue-200 to-transparent opacity-20"></span>
+          </h2>
+          <div className="space-y-24">
+            {logs.map((log) => (
+              <div key={log.id} className="border border-white/5 p-12 bg-white rounded-2xl shadow-sm border border-gray-100 hover:border-transparent transition-all group">
+                <div className="flex justify-between font-mono text-xs text-gray-500 mb-12 uppercase tracking-[0.4em]">
+                  <span>Observed: {log.session_date}</span>
+                  <span className="group-hover:opacity-100 transition-opacity underline underline-offset-4 tracking-tighter">Provenance_Secured</span>
+                </div>
+                
+                <div className="space-y-8 mb-16">
+                  {(log.logic_fingerprint || [log.session_summary]).map((step, idx) => (
+                    <div key={idx} className="flex gap-10 items-start group/step">
+                      <span className="text-sm font-bold text-blue-500 group-hover/step:opacity-100 transition-opacity mt-2">UNIT_{String(idx+1).padStart(2, '0')}</span>
+                      <p className="text-3xl text-gray-800 leading-tight font-light tracking-tight">{step}</p>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="bg-white p-10 border-l-4 border-blue-500 text-base text-gray-500 font-mono italic leading-relaxed">
+                   <span className="text-blue-500 font-black block mb-4 uppercase text-[10px] tracking-[0.2em] underline">Tutor Feedback</span>
+                   {log.wombatbot_evaluation}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Phase 4: User Feedback Collection */}
+        <section className="border border-transparent p-8 md:p-16 bg-white rounded-2xl shadow-lg border border-gray-100 mt-32">
+          <h2 className="text-4xl font-black uppercase tracking-tight text-gray-900 mb-2">
+            Phase 4 – User Feedback & Monitoring
+          </h2>
+          <p className="text-gray-600 text-lg mb-10 font-mono uppercase tracking-widest">
+            Help us improve the learning experience. Your ratings and comments are stored securely and reviewed regularly.
+          </p>
+          <div className="max-w-2xl mx-auto">
+            <FeedbackForm />
+          </div>
+          <div className="mt-12 p-6 border border-gray-100 bg-white rounded-xl shadow-sm border border-gray-100">
+            <h4 className="text-xl font-black uppercase tracking-tight text-gray-900 mb-4">
+              Why Your Feedback Matters
+            </h4>
+            <ul className="space-y-3 text-sm text-gray-600">
+              <li className="flex items-start gap-3">
+                <span className="text-blue-500 font-black">✓</span>
+                <span><strong>Continuous Improvement</strong>: Every rating and comment is analysed to prioritise feature development and bug fixes.</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-blue-500 font-black">✓</span>
+                <span><strong>Personalisation</strong>: Feedback helps us calibrate the difficulty, tone, and pacing of the adaptive learning paths.</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-blue-500 font-black">✓</span>
+                <span><strong>Research Validation</strong>: Your experience contributes to the evidence base for integrating Visible Learning, Cognitive Load Theory, and Self‑Reported Grades in real‑world settings.</span>
+              </li>
+            </ul>
+          </div>
+        </section>
+      
+
+
+        {/* --- Analytics & Dashboard --- */}
+        <section className="max-w-6xl mx-auto mt-16 mb-24">
+          <details className="group bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+            <summary className="cursor-pointer p-6 bg-blue-50 text-blue-900 font-bold text-2xl flex justify-between items-center hover:bg-blue-100 transition-colors">
+              <span>📊 Learning Analytics & Feedback Dashboard (Teacher View)</span>
+              <span className="text-blue-500 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div className="p-8 bg-gray-50/50">
+
+
         {/* Phase 1: Evidence‑Based Learning Components */}
         <section className="max-w-6xl mx-auto mb-24">
           <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 border border-gray-100">
@@ -530,7 +670,7 @@ Step 5: Assumptions: n is integer, odd integers are positive.`,
 
         {/* Phase 3 - Mastery Dashboard 2.0 */}
         <section className="border border-transparent p-8 md:p-16 relative bg-white rounded-xl shadow-sm border border-gray-100">
-          <div className="absolute -top-5 left-10 bg-[#0D0D0D] border-2 border-blue-500 px-8 py-1.5 font-black uppercase text-sm tracking-[0.3em] text-[#D4AF37]">
+          <div className="absolute -top-5 left-10 bg-blue-600 rounded-full border-2 border-blue-500 px-8 py-1.5 font-black uppercase text-sm tracking-[0.3em] text-blue-500">
             Phase 3 – Mastery Dashboard 2.0
           </div>
           <h2 className="text-4xl font-black text-gray-900 uppercase mb-8 tracking-tight mt-12">
@@ -556,15 +696,15 @@ Step 5: Assumptions: n is integer, odd integers are positive.`,
             </h4>
             <ul className="space-y-3 text-sm text-gray-600">
               <li className="flex items-start gap-3">
-                <span className="text-[#D4AF37] font-black">✓</span>
+                <span className="text-blue-500 font-black">✓</span>
                 <span><strong>Linear Regression</strong>: Fits a trend line to your historical mastery scores per TIMSS domain to predict future performance.</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-[#D4AF37] font-black">✓</span>
+                <span className="text-blue-500 font-black">✓</span>
                 <span><strong>Confidence Intervals</strong>: The shaded area around the forecast line represents uncertainty—wider when data is sparse or variable.</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-[#D4AF37] font-black">✓</span>
+                <span className="text-blue-500 font-black">✓</span>
                 <span><strong>Comparative Benchmarking</strong>: Later versions will show how your progress rate compares to similar students (percentile ranking).</span>
               </li>
             </ul>
@@ -573,7 +713,7 @@ Step 5: Assumptions: n is integer, odd integers are positive.`,
 
         {/* Phase 3 - Cognitive Load Optimiser */}
         <section className="border border-transparent p-8 md:p-16 relative bg-white rounded-xl shadow-sm border border-gray-100 mt-16">
-          <div className="absolute -top-5 left-10 bg-[#0D0D0D] border-2 border-blue-500 px-8 py-1.5 font-black uppercase text-sm tracking-[0.3em] text-[#D4AF37]">
+          <div className="absolute -top-5 left-10 bg-blue-600 rounded-full border-2 border-blue-500 px-8 py-1.5 font-black uppercase text-sm tracking-[0.3em] text-blue-500">
             Phase 3 – Cognitive‑Load Optimiser
           </div>
           <h2 className="text-4xl font-black text-gray-900 uppercase mb-8 tracking-tight mt-12">
@@ -599,15 +739,15 @@ Step 5: Assumptions: n is integer, odd integers are positive.`,
             </h4>
             <ul className="space-y-3 text-sm text-gray-600">
               <li className="flex items-start gap-3">
-                <span className="text-[#D4AF37] font-black">✓</span>
+                <span className="text-blue-500 font-black">✓</span>
                 <span><strong>Sweller&apos;s Theory (1988)</strong>: Working memory is limited; effective learning requires optimising intrinsic load, minimising extraneous load, and increasing germane load.</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-[#D4AF37] font-black">✓</span>
+                <span className="text-blue-500 font-black">✓</span>
                 <span><strong>Expertise Reversal Effect</strong>: What helps novices (detailed guidance) can hinder experts. Simplified view removes unnecessary scaffolding as you progress.</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-[#D4AF37] font-black">✓</span>
+                <span className="text-blue-500 font-black">✓</span>
                 <span><strong>Metacognitive Awareness</strong>: Rating your own cognitive load builds self‑monitoring skills, a key component of self‑regulated learning.</span>
               </li>
             </ul>
@@ -616,7 +756,7 @@ Step 5: Assumptions: n is integer, odd integers are positive.`,
 
         {/* Phase 3: Personalised Feedback Engine */}
         <section className="border border-transparent p-8 md:p-16 relative bg-white rounded-xl shadow-sm border border-gray-100 mt-16">
-          <div className="absolute -top-5 left-10 bg-[#0D0D0D] border-2 border-blue-500 px-8 py-1.5 font-black uppercase text-sm tracking-[0.3em] text-[#D4AF37]">
+          <div className="absolute -top-5 left-10 bg-blue-600 rounded-full border-2 border-blue-500 px-8 py-1.5 font-black uppercase text-sm tracking-[0.3em] text-blue-500">
             Phase 3 – Personalised Feedback Engine
           </div>
           <h2 className="text-4xl font-black text-gray-900 uppercase mb-8 tracking-tight mt-12">
@@ -647,153 +787,30 @@ Step 5: Assumptions: n is integer, odd integers are positive.`,
             </h4>
             <ul className="space-y-3 text-sm text-gray-600">
               <li className="flex items-start gap-3">
-                <span className="text-[#D4AF37] font-black">✓</span>
+                <span className="text-blue-500 font-black">✓</span>
                 <span><strong>Hattie’s Feedback (d = 0.79)</strong>: This engine combines task, process, and self‑regulation feedback tailored to your current learning state.</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-[#D4AF37] font-black">✓</span>
+                <span className="text-blue-500 font-black">✓</span>
                 <span><strong>TIMSS Domain Targeting</strong>: Identifies your weakest cognitive domain (Knowing, Applying, Reasoning) and prioritises feedback for that area.</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-[#D4AF37] font-black">✓</span>
+                <span className="text-blue-500 font-black">✓</span>
                 <span><strong>Data‑Driven Insights</strong>: Uses your self‑reported grades, prediction accuracy, and cognitive load ratings to adjust feedback tone and content.</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-[#D4AF37] font-black">✓</span>
+                <span className="text-blue-500 font-black">✓</span>
                 <span><strong>Template‑Based + Rule‑Based</strong>: Merges pre‑written feedback templates from the database with real‑time performance analysis.</span>
               </li>
             </ul>
           </div>
         </section>
 
-        <section className="border border-blue-500/50 p-8 md:p-20 relative bg-[#111111] shadow-[30px_30px_60px_rgba(0,0,0,0.5)]">
-          <div className="absolute -top-5 left-10 bg-[#0D0D0D] border-2 border-blue-500 px-8 py-1.5 font-black uppercase text-sm tracking-[0.3em] text-[#D4AF37]">Internal Assessment Project</div>
-          
-          <div className="space-y-20 mb-24">
-            <div className="prose prose-invert max-w-none">
-              <h2 className="text-4xl font-black text-gray-900 uppercase mb-8 tracking-tight">Project: Sunday Market Expansion</h2>
-              <p className="text-xl leading-relaxed text-gray-600 italic font-light border-l-4 border-blue-500/40 pl-10 mb-16">
-                &quot;Sebastian has been appointed as a Logic Consultant for the Avondale Sunday Market organisers. To accommodate a growing number of vendors, he must design a scalable spatial model and predict the financial impact of weather-related attendance fluctuations.&quot;
-              </p>
-
-              <div className="space-y-16">
-                <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-10 border-l-2 border-blue-500">
-                  <h3 className="text-2xl font-black text-[#D4AF37] uppercase mb-6 tracking-wide">[ Phase 1: Spatial Geometry - Achieved ]</h3>
-                  <p className="text-lg text-zinc-300 leading-relaxed">
-                    The layout consists of two primary unit types. A <b>Small Artisan Stall</b> requires <i>s</i> square metres of ground space. A <b>Large Food Truck Module</b> is more demanding, requiring 5 square metres more than twice the space of the Artisan Stall. 
-                    <br/><br/>
-                    <strong>Task:</strong> Formulate and simplify an algebraic expression for the total combined area required for one of each stall type. This simplified model will be used by organizers to calculate site-wide permit fees.
-                  </p>
-                </div>
-
-                <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-10 border-l-2 border-blue-500">
-                  <h3 className="text-2xl font-black text-[#D4AF37] uppercase mb-6 tracking-wide">[ Phase 2: Revenue Thresholds - Merit ]</h3>
-                  <p className="text-lg text-zinc-300 leading-relaxed">
-                    Based on the footprint established in Phase 1, the market&apos;s total weekly revenue (<i>R</i>), measured in dollars, is expected to decrease as the number of consecutive rainy weekends (<i>w</i>) increases. The organisers provide the following dynamic linear model:
-                    <br/><br/>
-                    <span className="text-4xl font-bold text-gray-900 block py-6 underline decoration-[#D4AF37]/40 tracking-widest text-center italic font-mono">R = 850 - (75 * w)</span>
-                    <br/>
-                    <strong>Dynamic Constraint:</strong> Due to current conditions, a market discount factor <i>d</i> of <b>{envFactors.discountRate}</b> applies to the required minimum revenue. 
-                    <br/><br/>
-                    If the organisers require a minimum revenue of <b>${(400 * parseFloat(envFactors.discountRate)).toFixed(0)}</b> (calculated as $400 * <i>d</i>) to cover costs, calculate the maximum number of rainy weekends the market can sustain. Justify your answer using an equation.
-                  </p>
-                </div>
-
-                <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-10 border-l-2 border-blue-500">
-                  <h3 className="text-2xl font-black text-[#D4AF37] uppercase mb-6 tracking-wide">[ Phase 3: Patterns & Generalisation - Excellence ]</h3>
-                  <p className="text-lg text-zinc-300 leading-relaxed">
-                    To optimize the concentric layout of stalls around the central hub, Sebastian notices that vendor growth follows a pattern of consecutive odd integers. He needs to verify a core scaling rule for the expansion rings.
-                    <br/><br/>
-                    <strong>Task:</strong> Algebraically prove that the difference between the squares of any two consecutive positive odd integers is always a multiple of 8.
-                    <br/><br/>
-                    <strong>Reflection:</strong> Explicitly state the assumptions you made for this algebraic model. Given the current <b>{envFactors.rainProb}% Rain Probability</b>, discuss one real-world limitation of using this discrete model to predict physical vendor growth in the dynamic Avondale Market environment.
-                  </p>
-                </div>
-              </div>
+        
             </div>
-          </div>
-
-          <form onSubmit={handleSubmit} className="border-t border-transparent pt-20">
-            <h4 className="font-black uppercase text-xs tracking-[0.5em] mb-8 text-[#D4AF37]/60 text-center italic">Transmit Logic Fingerprints for Expert Audit</h4>
-            <textarea 
-              className="w-full bg-[#0D0D0D] border-2 border-gray-100 p-10 text-gray-900 text-2xl font-mono min-h-[450px] outline-none focus:border-blue-500 transition-all placeholder:opacity-10"
-              placeholder="Structure your proof and working here (e.g., Step 1, Step 2...)"
-              value={answer}
-              onChange={(e) => setAnswer(e.target.value)}
-            />
-            <div className="flex flex-col md:flex-row justify-between items-center mt-12 gap-10">
-              <span className="text-[10px] font-mono opacity-30 uppercase tracking-[0.3em]">ID: AVONDALE_DYNAMIC_V3</span>
-              <button type="submit" className="w-full md:w-auto bg-[#D4AF37] text-black px-24 py-6 font-black text-xl uppercase hover:bg-white hover:shadow-[0_0_50px_rgba(212,175,55,0.4)] transition-all active:scale-95 border-none">
-                {isSubmitting ? 'SEALING_LOGIC...' : 'TRANSMIT LOGIC'}
-              </button>
-            </div>
-            {submitStatus && <div className="mt-10 bg-white text-black p-5 text-center font-black uppercase tracking-widest text-lg border-4 border-blue-500">{submitStatus}</div>}
-          </form>
+          </details>
         </section>
-
-        <section className="space-y-16 pb-48">
-          <h2 className="text-4xl font-black uppercase tracking-tighter italic text-gray-900 flex items-center gap-6">
-            Atomic Logic Trail
-            <span className="h-px flex-1 bg-gradient-to-r from-[#D4AF37] to-transparent opacity-20"></span>
-          </h2>
-          <div className="space-y-24">
-            {logs.map((log) => (
-              <div key={log.id} className="border border-white/5 p-12 bg-[#0a0a0a] hover:border-transparent transition-all group">
-                <div className="flex justify-between font-mono text-[10px] text-[#D4AF37] opacity-40 mb-12 uppercase tracking-[0.4em]">
-                  <span>Observed: {log.session_date}</span>
-                  <span className="group-hover:opacity-100 transition-opacity underline underline-offset-4 tracking-tighter">Provenance_Secured</span>
-                </div>
-                
-                <div className="space-y-8 mb-16">
-                  {(log.logic_fingerprint || [log.session_summary]).map((step, idx) => (
-                    <div key={idx} className="flex gap-10 items-start group/step">
-                      <span className="text-[10px] font-mono text-[#D4AF37] opacity-20 group-hover/step:opacity-100 transition-opacity mt-2">UNIT_{String(idx+1).padStart(2, '0')}</span>
-                      <p className="text-3xl text-zinc-100 leading-tight font-light tracking-tight">{step}</p>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="bg-white p-10 border-l-4 border-blue-500 text-base text-gray-500 font-mono italic leading-relaxed">
-                   <span className="text-[#D4AF37] font-black block mb-4 uppercase text-[10px] tracking-[0.2em] underline">[WOMBATBOT_ATOMIC_AUDIT]</span>
-                   {log.wombatbot_evaluation}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Phase 4: User Feedback Collection */}
-        <section className="border border-transparent p-8 md:p-16 bg-white rounded-2xl shadow-lg border border-gray-100 mt-32">
-          <h2 className="text-4xl font-black uppercase tracking-tight text-gray-900 mb-2">
-            Phase 4 – User Feedback & Monitoring
-          </h2>
-          <p className="text-gray-600 text-lg mb-10 font-mono uppercase tracking-widest">
-            Help us improve the learning experience. Your ratings and comments are stored securely and reviewed regularly.
-          </p>
-          <div className="max-w-2xl mx-auto">
-            <FeedbackForm />
-          </div>
-          <div className="mt-12 p-6 border border-gray-100 bg-white rounded-xl shadow-sm border border-gray-100">
-            <h4 className="text-xl font-black uppercase tracking-tight text-gray-900 mb-4">
-              Why Your Feedback Matters
-            </h4>
-            <ul className="space-y-3 text-sm text-gray-600">
-              <li className="flex items-start gap-3">
-                <span className="text-[#D4AF37] font-black">✓</span>
-                <span><strong>Continuous Improvement</strong>: Every rating and comment is analysed to prioritise feature development and bug fixes.</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-[#D4AF37] font-black">✓</span>
-                <span><strong>Personalisation</strong>: Feedback helps us calibrate the difficulty, tone, and pacing of the adaptive learning paths.</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-[#D4AF37] font-black">✓</span>
-                <span><strong>Research Validation</strong>: Your experience contributes to the evidence base for integrating Visible Learning, Cognitive Load Theory, and Self‑Reported Grades in real‑world settings.</span>
-              </li>
-            </ul>
-          </div>
-        </section>
-      </main>
+</main>
 
       <footer className="max-w-5xl mx-auto mt-48 text-[9px] font-mono opacity-20 text-center uppercase tracking-[2.5em] pb-32">
         Sovereign // Digital Coral // 2026
